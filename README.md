@@ -66,7 +66,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         bash run.sh -s ${s} -c config.yaml &
     done
     ```
-- if you pass nothing to parameter s, please give the run.sh two positional parameter:
+- if you pass nothing to parameter s, please give the run.sh two positional parameters:
     ``` bash
     for i in {1..5}
     do
@@ -97,7 +97,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ``` bash
     python rswp.py star --samples M1 --yaml_file config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a
     ```
-    the code above will run star mapping against "\~/doc/reference/mouse/star_2.7.5a" instead of "\~/doc/reference/star_2.7.5a"
+    the code above will run star mapping against **"\~/doc/reference/mouse/star_2.7.5a"** instead of **"\~/doc/reference/star_2.7.5a"**
 
 ### 4. Check commands
 - add --no-run to rswp, and it will not call subprocess.Popen() but only print commands on the screen,
