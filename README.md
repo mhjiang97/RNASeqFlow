@@ -98,5 +98,13 @@ Minghao Jiang, <jiangminghao1001@163.com>
     python rswp.py star --samples M1 --yaml_file config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a
     ```
     the code above will run star mapping against "\~/doc/reference/mouse/star_2.7.5a" instead of "\~/doc/reference/star_2.7.5a"
+
+### 4. Check commands
+- add --no-run to rswp, and it will not call subprocess.Popen() but only print commands on the screen,
+  so you can check if commands are what you want:
+    ``` bash
+    python rswp.py star --samples M1 --yaml_file config.yaml --no-run
+    ```
+
 ## License  
 RSWP is licensed under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html)
