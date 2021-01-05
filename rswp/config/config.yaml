@@ -1,0 +1,19 @@
+Common:
+  dir_project: &dir_project ~/projects/AS/data/paper/
+  print_class: False
+STAR:
+  dir_index: ~/doc/reference/star_2.7.5a
+  name_star_dir: &name_star_dir star
+  transcript_bam: True
+Settings:
+  gtf: ~/doc/reference/gtf/gencode.v32.annotation.gtf
+  fa: ~/doc/reference/fa/GRCh38.p13.genome.fa
+  suffix_fq: fastq
+  nproc: 15
+  dir_fq: ~/projects/AS/data/paper/
+  dir_bam:
+    - *dir_project
+    - *name_star_dir
+RSEM:
+  prefix_reference: ~/doc/reference/rsem/index
+  name_rsem_dir: rsem
