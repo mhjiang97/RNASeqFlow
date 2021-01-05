@@ -18,6 +18,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
 - `RSEM`  
     > + [RSEM](https://github.com/deweylab/RSEM) quantification algorithm  
     > + based on existing bam only
+- Applications for other tools are being built...
 ## Features
 ### 1. Run one tool on a list of samples
 - get help first:  
