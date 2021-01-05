@@ -1,5 +1,5 @@
 # RSWP: A library for easy RNA-seq analysis  
-_note: only for paired-end data so far_  
+_note: only for paired-end data so far and upgrade your python to 3.9_  
 
 -----------
 ## Author  
