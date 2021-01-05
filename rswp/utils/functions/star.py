@@ -8,6 +8,8 @@ def star(args, common, settings):
             tb = common.returnSubSettings("STAR")["transcript_bam"]
         except KeyError:
             pass
+    else:
+        tb = args.transcript_bam
 
     if tb:
         mystar = StarTransBam(args.build_index, args.dir_index, args.name_star_dir,

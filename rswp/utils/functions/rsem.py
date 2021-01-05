@@ -2,8 +2,19 @@ from ..classes.Rsem import *
 from .. import defaults
 
 def rsem(args, common, settings):
-    ##### create an Rsem instance #####
-    myrsem = Rsem(args.prepare_reference, args.prefix_reference, args.name_rsem_dir, common, settings)
+    if args.fq is None:
+        fq = defaults.defaults_rsem["fq"]
+        try:
+            fq = common.returnSubSettings("RSEM")["fq"]
+        except KeyError:
+            pass
+    else:
+        fq = args.fq
+
+    if fq:
+        myrsem = RsemBowtie2(args.fq, args.path_bowtie2, args.prepare_reference, args.prefix_reference, args.name_rsem_dir, common, settings)
+    else:
+        myrsem = Rsem(args.fq, args.path_bowtie2, args.prepare_reference, args.prefix_reference, args.name_rsem_dir, common, settings)
     myrsem.subSet(defaults.defaults_rsem)
     myrsem.generateCmds()
     myrsem.runCmds()

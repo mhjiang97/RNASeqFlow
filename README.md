@@ -8,7 +8,8 @@ Minghao Jiang, <jiangminghao1001@163.com>
 - [supported tools](#supported-tools)  
 - [features](#features)
 - [license](#license)
-## Supported tools  
+## Supported tools
+**_make supported tools executable in your PATH_**
 - `FastQC`
     > + quality control on fastq files  
     > + get more information via [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
@@ -17,7 +18,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     > + both genome bam and transcriptome bam are supported
 - `RSEM`  
     > + [RSEM](https://github.com/deweylab/RSEM) quantification algorithm  
-    > + based on existing bam only
+    > + based on existing bam or directly mapping fq files with bowtie2
 - Applications for other tools are being built...
 ## Features
 ### 1. Run one tool on a list of samples

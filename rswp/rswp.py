@@ -86,6 +86,11 @@ def main():
     ## ----- RSEM ----- ##
     parser_rsem = newSubparser()
     parser_rsem.add_argument("-v", "--version", action = "version", version = version)
+    parser_rsem.add_argument("--fq", action = argparse.BooleanOptionalAction, default = None,
+                             help = "run RSEM based on fq files and use bowtie2 as the aligner")
+    parser_rsem.add_argument("--path_bowtie2", type = str, metavar = "~/bin/",
+                             help = "path containing executable bowtie2. "
+                                    "[Default: {}]".format(defaults.defaults_rsem["path_bowtie2"]))
     parser_rsem.add_argument("--prepare_reference", action = argparse.BooleanOptionalAction, default = None,
                              help = "prepare rsem reference or not")
     parser_rsem.add_argument("--prefix_reference", type = str, metavar = "~/doc/reference/rsem/index",
