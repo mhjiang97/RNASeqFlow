@@ -25,10 +25,10 @@ class Tools:
         assert False, 'action must be defined in subclasses!'
 
     def runCmds(self):
-        sys.stdout.write("\n\nIndex is {}. Running {} on {}\n".format(self.common.index, self.name, self.sample))
+        sys.stdout.write("\n\n[NOTIFICATION] Index is {}. Running {} on {}\n".format(self.common.index, self.name, self.sample))
         if self.common.print_class:
             sys.stdout.write(str(self))
-        sys.stdout.write("\n\nAll Commands Ready to Run in Queue:")
+        sys.stdout.write("\n\n[NOTIFICATION] All Commands Ready to Run in Queue:")
 
         for cmd_name in self.cmds.keys():
             sys.stdout.write("\n{}: {}\n".format(cmd_name, self.cmds[cmd_name]))
@@ -42,19 +42,19 @@ class Tools:
                         try:
                             size = os.path.getsize(os.path.expanduser(result))
                             if size > 0:
-                                sys.stdout.write("\n\nWARNING: '{}' Exits! "
+                                sys.stdout.write("\n\n[WARNING] '{}' Exits! "
                                                  "Workflow will Quit!\n".format(result))
                                 a[i] = True
                                 #sys.exit(1)
                             else:
-                                sys.stdout.write("\n\nWARNING: '{}' Exits! But It's Empty! "
+                                sys.stdout.write("\n\n[WARNING] '{}' Exits! But It's Empty! "
                                                  "Workflow Continues\n".format(result))
                         except FileNotFoundError:
                             continue
                         i += 1
 
                     if sum(a):
-                        sys.stdout.write("\n\nNOTIFICATION: Remove '{}' "
+                        sys.stdout.write("\n\n[NOTIFICATION] Remove '{}' "
                                          "and Run Again if You'd Like to Rerun {} on {}\n"
                                          "\nProgram Exits with Error!\n".format(" and ".join(np.array(self.results[cmd_name])[a]),
                                                                                 self.name,
@@ -64,7 +64,7 @@ class Tools:
                     pass
 
             cmd = self.cmds[cmd_name]
-            sys.stdout.write("\n\nThe Step Running is: {}.\nThe Command is: {}\n".format(cmd_name, cmd))
+            sys.stdout.write("\n\n[NOTIFICATION] The Step Running is: {}.\nThe Command is: {}\n".format(cmd_name, cmd))
 
             if self.common.run:
                 subp = subprocess.Popen(cmd, shell = True,
@@ -73,12 +73,12 @@ class Tools:
                                         encoding = "utf-8")
                 #subp.wait()
                 (out, err) = subp.communicate()
-                sys.stdout.write("\n\nstdout from {} :\n{}".format(cmd_name, out))
-                sys.stderr.write("\n\nstderr from {} :\n{}".format(cmd_name, err))
+                sys.stdout.write("\n\n[NOTIFICATION] stdout from {} :\n{}".format(cmd_name, out))
+                sys.stderr.write("\n\n[NOTIFICATION] stderr from {} :\n{}".format(cmd_name, err))
                 if subp.poll() == 0:
-                    sys.stdout.write("\n\n===== NOTIFICATION: step '{}' finished successfully! =====\n".format(cmd_name))
+                    sys.stdout.write("\n\n===== [NOTIFICATION] Step '{}' Finished Successfully! =====\n".format(cmd_name))
                 else:
-                    sys.stderr.write("\n\n***** ERROR: step '{}' failed! *****\n".format(cmd_name))
+                    sys.stderr.write("\n\n***** [ERROR] Step '{}' Failed! *****\n".format(cmd_name))
                     sys.exit(1)
         sys.exit(0)
 
@@ -90,7 +90,7 @@ class Tools:
     def createOut(self, name_tool_dir, out_type = "dir"):
         self.out = ""
         if out_type not in ["dir", "prefix"]:
-            sys.stderr.write("\n\nERROR: function createOut from class Tools "
+            sys.stderr.write("\n\n[ERROR] function createOut from class Tools "
                              "only accept 'dir' or 'prefix' for 'out_type' argument\n"
                              "please modify the source code for class {}\n".format(self.name))
             sys.exit(1)
@@ -109,7 +109,7 @@ class Tools:
         return ", ".join(attrs)
 
     def __str__(self):
-        return "\n\nNOTIFICATION:\nThe Tool Running is {}!\n" \
+        return "\n\n[NOTIFICATION] The Tool Running is {}!\n" \
                "Class {} Attributes are:\n[{}: {}]\n".format(self.name,
                                                              self.name.capitalize(),
                                                              self.__class__.__name__,

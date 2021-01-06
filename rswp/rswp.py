@@ -1,4 +1,6 @@
-import textwrap
+#!/usr/bin/env python
+
+import sys, textwrap
 from utils.functions import *
 from utils.classes import *
 from utils import defaults
@@ -13,14 +15,15 @@ def main():
     #====================================================================================== #
 
     ## ----- top-level parser ----- ##
-    parser_top = argparse.ArgumentParser(description = textwrap.dedent("""\
+    parser_top = argparse.ArgumentParser(usage = "%(prog)s 【version: {}】".format(version),
+    description = textwrap.dedent("""\
     ===== ---------------------------- =====
-    ||||| python work flow for RNA-seq |||||
+    ##### Python Workflow for RNA-seq  #####
     ===== ---------------------------- =====
     """),epilog = textwrap.dedent("""\
-    ===== =========================================================================== =====
-    ##### Contact Minghao Jiang via jiamginghao1001@163.com If You Have Any Questions #####
-    ===== =========================================================================== =====
+    ===================================================================================
+    Feel Free to Contact Minghao Jiang via jiamginghao1001@163.com When Having Troubles
+    ===================================================================================
     """), formatter_class = argparse.RawTextHelpFormatter)
     parser_top.add_argument("-v", "--version", action = "version", version = version)
 
@@ -33,18 +36,18 @@ def main():
     parser_common.add_argument("-i", "--index", type = int, metavar = "1, 2, 3, ...",
                                help = "which sample to run. "
                                       "[Default: {}] means run the first sample.This parameter will be very useful when being in a loop".format(defaults.defaults_common["index"]))
-    parser_common.add_argument("--yaml_file", type = argparse.FileType('r'), metavar = "~/projects/bcpall/doc/config.yaml",
+    parser_common.add_argument("-c", "--config", dest = "yaml_file", type = argparse.FileType('r'), metavar = "~/projects/bcpall/doc/config.yaml",
                                help = "a config file in yaml format having 2 hierarchies. "
                                       "No default value, so complement all non-default parameters if you don't have one")
-    parser_common.add_argument("--samples", nargs = "+", metavar = ('samples.txt', 'id'),
+    parser_common.add_argument("-s", "--samples", nargs = "+", metavar = ('samples.txt', 'id'),
                                help = "either a file incorporating sample ids without a header or a list of sample ids")
-    parser_common.add_argument("--dir_project", type = str, metavar = "~/projects/bcpall/analysis/rnaseq",
+    parser_common.add_argument("-d", "--dir_project", type = str, metavar = "~/projects/bcpall/analysis/rnaseq",
                                help = "use the dir as prefix of outputs. "
                                       "[Default: {}] means workflow yields output in the current dir".format(defaults.defaults_common["dir_project"]))
     parser_common.add_argument("--run", action = argparse.BooleanOptionalAction, default = None,
                                help = "run shell scripts or only print them on the screen")
     parser_common.add_argument("--check", action = argparse.BooleanOptionalAction, default = None,
-                               help = "check if result files exit")
+                               help = "if result files exit program will exit with an error")
 
     ## ----- paths or necessary files settings ----- ##
     parser_settings = parser_groups.add_argument_group(title = "PATHS SETTINGS",
@@ -108,8 +111,8 @@ def main():
 
     ## ----- subcommands ----- ##
     subparsers = parser_top.add_subparsers(title = "different tools to tackle data",
-                                           description = "supported tools",
-                                           help = "select a tool to see details")
+                                           description = "supported tools so far are as follows",
+                                           help = "select one to see details")
 
     parser_sub_star = subparsers.add_parser("star",
                                             help = "run STAR mapping or build an index",
@@ -133,6 +136,9 @@ def main():
     parser_sub_rsem.set_defaults(func = fastqc.fastqc)
 
     args = parser_top.parse_args()
+
+    if len(sys.argv) == 1:
+        args = parser_top.parse_args(["-h"])
 
     ##### common and paths settings classes #####
     common = Common.Common(args.print_class, args.index, args.yaml_file,

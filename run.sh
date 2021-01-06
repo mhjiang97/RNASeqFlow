@@ -54,5 +54,5 @@ fi
 
 #echo "${sample}"
 #echo "${config}"
-python ${rswp} star --samples "${sample}" --yaml_file "${config}" --no-run
-python ${rswp} rsem --samples "${sample}" --yaml_file "${config}" --no-run
+python ${rswp} star -s "${sample}" -c "${config}" --no-run
+python ${rswp} rsem -s "${sample}" -c "${config}" --no-run

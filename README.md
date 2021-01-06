@@ -57,8 +57,8 @@ Minghao Jiang, <jiangminghao1001@163.com>
     # run.sh codes
     # ...
     # at bottom:
-    python ${rswp} star --samples "${sample}" --yaml_file "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
-    python ${rswp} rsem --samples "${sample}" --yaml_file "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
+    python ${rswp} star --samples "${sample}" --config "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
+    python ${rswp} rsem --samples "${sample}" --config "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
     ```
 - run.sh expects two parameters "-s" and "-c", which represent "sample" and "config" respectively:  
     ``` bash
@@ -96,7 +96,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```
 - remember: command line parameters always take precedence over corresponding settings in the config:
     ``` bash
-    python rswp.py star --samples M1 --yaml_file config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a
+    python rswp.py star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a
     ```
     the code above will run star mapping against **"\~/doc/reference/mouse/star_2.7.5a"** instead of **"\~/doc/reference/star_2.7.5a"**
 
@@ -104,7 +104,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
 - add --no-run to rswp, and it will not call subprocess.Popen() but only print commands on the screen,
   so you can check if commands are what you want:
     ``` bash
-    python rswp.py star --samples M1 --yaml_file config.yaml --no-run
+    python rswp.py star --samples M1 --config config.yaml --no-run
     ```
 
 ## License  

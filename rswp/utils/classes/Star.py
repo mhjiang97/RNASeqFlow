@@ -76,7 +76,7 @@ class StarTransBam(Star):
                       phred = phred, common = common, settings = settings)
     def action(self):
         if self.build_index:
-            sys.stderr.write("\n\nERROR: transcript_bam and build_index are mutually exclusive!!"
+            sys.stderr.write("\n\n[ERROR] transcript_bam and build_index are mutually exclusive!!"
                              "\nPlease delete flag transcript_bam if you want to build a star index!!\n")
             sys.exit(1)
         else:
