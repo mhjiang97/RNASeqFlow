@@ -1,2 +1,6 @@
 numpy>=1.19.2
 PyYAML>=5.3.1
+
+colorama>=0.4.4
+yaml>=0.2.5
+setuptools>=49.6.0

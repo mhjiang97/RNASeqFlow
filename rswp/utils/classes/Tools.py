@@ -1,7 +1,15 @@
-import sys, subprocess, os
+import sys, subprocess, os, time, colorama
 import numpy as np
 from ..utils import *
 from collections import OrderedDict
+
+colorama.init(autoreset = True)
+def myNotification():
+    sys.stdout.write(colorama.Fore.GREEN + "\n\n[NOTIFICATION {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+def myError():
+    sys.stderr.write(colorama.Fore.RED + "\n\n[ERROR {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+def myWarning():
+    sys.stdout.write(colorama.Fore.YELLOW + "\n\n[WARNING {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 class Tools:
     def __init__(self, name, common, settings):
@@ -25,10 +33,14 @@ class Tools:
         assert False, 'action must be defined in subclasses!'
 
     def runCmds(self):
-        sys.stdout.write("\n\n[NOTIFICATION] Index is {}. Running {} on {}\n".format(self.common.index, self.name, self.sample))
+        myNotification()
+        sys.stdout.write("Index is {} Running {} on {}\n".format(self.common.index, self.name, self.sample))
+
         if self.common.print_class:
             sys.stdout.write(str(self))
-        sys.stdout.write("\n\n[NOTIFICATION] All Commands Ready to Run in Queue:")
+
+        myNotification()
+        sys.stdout.write("All Commands Ready to Run in Queue:".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
         for cmd_name in self.cmds.keys():
             sys.stdout.write("\n{}: {}\n".format(cmd_name, self.cmds[cmd_name]))
@@ -42,29 +54,32 @@ class Tools:
                         try:
                             size = os.path.getsize(os.path.expanduser(result))
                             if size > 0:
-                                sys.stdout.write("\n\n[WARNING] '{}' Exits! "
+                                myWarning()
+                                sys.stdout.write("'{}' Exits! "
                                                  "Workflow will Quit!\n".format(result))
                                 a[i] = True
                                 #sys.exit(1)
                             else:
-                                sys.stdout.write("\n\n[WARNING] '{}' Exits! But It's Empty! "
+                                myWarning()
+                                sys.stdout.write("'{}' Exits! But It's Empty! "
                                                  "Workflow Continues\n".format(result))
                         except FileNotFoundError:
                             continue
                         i += 1
 
                     if sum(a):
-                        sys.stdout.write("\n\n[NOTIFICATION] Remove '{}' "
-                                         "and Run Again if You'd Like to Rerun {} on {}\n"
-                                         "\nProgram Exits with Error!\n".format(" and ".join(np.array(self.results[cmd_name])[a]),
-                                                                                self.name,
-                                                                                self.sample))
+                        myError()
+                        sys.stdout.write("Program Exits with Error!\n"
+                                         "Remove '{}' and Run Again if You'd Like to Rerun {} on {}\n".format(" and ".join(np.array(self.results[cmd_name])[a]),
+                                                                                                              self.name,
+                                                                                                              self.sample))
                         sys.exit(1)
                 except KeyError:
                     pass
 
             cmd = self.cmds[cmd_name]
-            sys.stdout.write("\n\n[NOTIFICATION] The Step Running is: {}.\nThe Command is: {}\n".format(cmd_name, cmd))
+            myNotification()
+            sys.stdout.write("The Step Running is {}:\nCommand: {}\n".format(cmd_name, cmd))
 
             if self.common.run:
                 subp = subprocess.Popen(cmd, shell = True,
@@ -73,12 +88,18 @@ class Tools:
                                         encoding = "utf-8")
                 #subp.wait()
                 (out, err) = subp.communicate()
-                sys.stdout.write("\n\n[NOTIFICATION] stdout from {} :\n{}".format(cmd_name, out))
-                sys.stderr.write("\n\n[NOTIFICATION] stderr from {} :\n{}".format(cmd_name, err))
+                myNotification()
+                sys.stdout.write("stdout from {}:\n{}".format(cmd_name, out))
+                myNotification()
+                sys.stderr.write("stderr from {}:\n{}".format(cmd_name, err))
                 if subp.poll() == 0:
-                    sys.stdout.write("\n\n===== [NOTIFICATION] Step '{}' Finished Successfully! =====\n".format(cmd_name))
+                    sys.stdout.write(colorama.Fore.GREEN +
+                                     "\n\n===== [NOTIFICATION {}] Step '{}' Finished Successfully! =====\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                                                                                                                   cmd_name))
                 else:
-                    sys.stderr.write("\n\n***** [ERROR] Step '{}' Failed! *****\n".format(cmd_name))
+                    sys.stderr.write(colorama.Fore.RED +
+                                     "\n\n***** [ERROR {}] Step '{}' Failed! *****\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                                                                                             cmd_name))
                     sys.exit(1)
         sys.exit(0)
 
@@ -90,7 +111,8 @@ class Tools:
     def createOut(self, name_tool_dir, out_type = "dir"):
         self.out = ""
         if out_type not in ["dir", "prefix"]:
-            sys.stderr.write("\n\n[ERROR] function createOut from class Tools "
+            myError()
+            sys.stderr.write("function createOut from class Tools "
                              "only accept 'dir' or 'prefix' for 'out_type' argument\n"
                              "please modify the source code for class {}\n".format(self.name))
             sys.exit(1)
@@ -109,7 +131,8 @@ class Tools:
         return ", ".join(attrs)
 
     def __str__(self):
-        return "\n\n[NOTIFICATION] The Tool Running is {}!\n" \
+        myNotification()
+        return "The Tool Running is {}!\n" \
                "Class {} Attributes are:\n[{}: {}]\n".format(self.name,
                                                              self.name.capitalize(),
                                                              self.__class__.__name__,
