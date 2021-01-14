@@ -109,9 +109,34 @@ Minghao Jiang, <jiangminghao1001@163.com>
     do
         bash run.sh -c config.yaml samples.txt ${i} &
     done
-    ```
+    ```  
   
-### 3. Config based  
+### 3. Run workflow on cluster  
+- a sample sbatch file is like:
+  
+    ```bash
+    cat workflow.sbatch
+    ```  
+    ```shell
+    #!/bin/bash
+    #SBATCH -p cpu
+    #SBATCH -N 1
+    #SBATCH -n 1
+    #SBATCH --exclusive
+    #SBATCH --mail-type=end
+    #SBATCH --output=logs/slurm/workflow.%a.out
+    #SBATCH --error=logs/slurm/workflow.%a.err
+    #SBATCH --mail-user=jiangminghao1001@163.com
+    #SBATCH --array=1-5
+    bash run.sh -c config.yaml samples.txt ${SLURM_ARRAY_TASK_ID}
+    ```  
+- then submit it to the computing node:
+  
+    ```bash
+    sbatch workflow.sbatch
+    ```  
+  
+### 4. Config based  
 - a config file must be in yaml format and have at least two hierarchies:
   
     ```yaml
@@ -141,7 +166,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```  
     the code above will run star mapping against `~/doc/reference/mouse/star_2.7.5a` instead of `~/doc/reference/star_2.7.5a`
   
-### 4. Check commands  
+### 5. Check commands  
 - add --no-run to rswp, and it will not call subprocess.Popen() but only print commands on the screen,
   so you can check if commands are what you want:
   
