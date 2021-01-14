@@ -17,7 +17,7 @@ def main():
     #====================================================================================== #
 
     ## ----- top-level parser ----- ##
-    parser_top = argparse.ArgumentParser(usage = "%(prog)s 【version: {}】".format(version),
+    parser_top = argparse.ArgumentParser(usage = "%(prog)s {tools} [options]",
     description = textwrap.dedent("""\
     ----- ---------------------------- -----
     @@@@@ Python Workflow for RNA-seq  @@@@@
@@ -170,7 +170,8 @@ def main():
     args = parser_top.parse_args()
 
     if len(sys.argv) == 1:
-        args = parser_top.parse_args(["-h"])
+        parser_top.parse_args(["-h"])
+        sys.exit(0)
 
     ##### common and paths settings classes #####
     common = Common.Common(args.print_class, args.index, args.yaml_file,
