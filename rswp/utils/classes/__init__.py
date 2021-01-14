@@ -1,1 +1,1 @@
-__all__ = ["Common", "Settings", "Star", "Tools", "Rsem", "Fastqc"]
+__all__ = ["Common", "Settings", "Star", "Tools", "Rsem", "Fastqc", "Samtools", "Salmon"]

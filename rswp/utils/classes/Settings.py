@@ -1,11 +1,12 @@
 from ..utils import *
 
 class Settings:
-    def __init__(self, nproc, gtf, fa, suffix_fq, dir_fq, dir_bam):
+    def __init__(self, nproc, gtf, fa, suffix_fq, suffix_bam, dir_fq, dir_bam):
         self.nproc = nproc
         self.gtf = gtf
         self.fa = fa
         self.suffix_fq = suffix_fq
+        self.suffix_bam = suffix_bam
         self.dir_fq = dir_fq
         self.dir_bam = dir_bam
 

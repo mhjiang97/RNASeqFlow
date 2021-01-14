@@ -4,7 +4,7 @@ _(note: only for paired-end data so far and upgrade your python to 3.9)_
 
 -----------
 ## Author  
-Minghao Jiang, <jiangminghao1001@163.com  
+Minghao Jiang, <jiangminghao1001@163.com>  
 
 ## Table of Contents  
 - [supported tools](#supported-tools)  
@@ -12,10 +12,10 @@ Minghao Jiang, <jiangminghao1001@163.com
 - [license](#license)
 
 ## Supported tools  
-**_make supported tools executable in your PATH_**  
+**_make sure supported tools are executable in your PATH_**  
 
 - `FastQC`
-
+  
     > + quality control on fastq files  
     > + get more information via [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
     
@@ -29,7 +29,17 @@ Minghao Jiang, <jiangminghao1001@163.com
     > + [RSEM](https://github.com/deweylab/RSEM) quantification algorithm  
     > + based on existing bam or directly mapping fq files with bowtie2  
     
-- Applications for other tools are being built...  
+- `SAMtools`  
+  
+    > + [SAMtools](https://github.com/samtools/samtools) utilities for manipulating alignments  
+    > + supported for only samtools index so far  
+    
+- `Salmon`
+  
+    > + [Salmon](https://github.com/COMBINE-lab/salmon) quantification algorithm
+    > + mapping-based mode only  
+
+- _Applications for other tools are being built..._  
 
 ## Features
   
@@ -123,7 +133,7 @@ Minghao Jiang, <jiangminghao1001@163.com
     ```bash
     python rswp.py star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a  
     ```  
-    the code above will run star mapping against **"\~/doc/reference/mouse/star_2.7.5a"** instead of **"\~/doc/reference/star_2.7.5a"**
+    the code above will run star mapping against `~/doc/reference/mouse/star_2.7.5a` instead of `~/doc/reference/star_2.7.5a`
   
 ### 4. Check commands  
 - add --no-run to rswp, and it will not call subprocess.Popen() but only print commands on the screen,

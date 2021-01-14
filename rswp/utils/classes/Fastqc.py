@@ -15,7 +15,7 @@ class Fastqc(Tools):
                                         self.settings.suffix_fq)
         if not os.path.exists(os.path.expanduser(self.out)):
             self.cmds["creating dir"] = "mkdir -p {}".format(self.out)
-        self.cmds["fastqc"] = "fastqc -t {} -o {} {} {}".format(self.settings.nproc, self.out, file_in1, file_in2)
+        self.cmds["quality controlling"] = "fastqc -t {} -o {} {} {}".format(self.settings.nproc, self.out, file_in1, file_in2)
 
-        self.results["fastqc"] = ["{}/{}_R1_fastqc.html".format(self.out, self.sample)]
-        self.results["fastqc"].append("{}/{}_R2_fastqc.html".format(self.out, self.sample))
+        self.results["quality controlling"] = ["{}/{}_R1_fastqc.html".format(self.out, self.sample)]
+        self.results["quality controlling"].append("{}/{}_R2_fastqc.html".format(self.out, self.sample))

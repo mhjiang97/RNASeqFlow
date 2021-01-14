@@ -6,6 +6,6 @@ setuptools.setup(name = "RNASeqFlow",
                  author_email = "jianmginghao1001@163.com",
                  description = "A library for easy RNA-seq analysis",
                  packages = setuptools.find_packages(), classifiers = ['Development Status :: 3 - Alpha',
-                                                                      'License :: OSI Approved :: MIT License',
+                                                                       'License :: OSI Approved :: MIT License',
                                                                        'Programming Language :: Python :: 2',
-                                                                      'Programming Language :: Python :: 3'])
+                                                                       'Programming Language :: Python :: 3'])

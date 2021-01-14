@@ -43,7 +43,9 @@ class Star(Tools):
                                         "--outSAMattrRGline ID:{} SM:{} LB:RNA PL:ILLUMINA " \
                                         "--sjdbGTFfile {} " \
                                         "--limitBAMsortRAM {} " \
+                                        "--outBAMsortingThreadN {}" \
                                         "--readQualityScoreBase {} " \
+                                        "--outBAMcompression 10 " \
                                         "--sjdbOverhang 100 " \
                                         "--outSAMtype BAM SortedByCoordinate " \
                                         "--outSAMattributes NH XS HI AS nM NM MD jM jI MC ch " \
@@ -57,14 +59,16 @@ class Star(Tools):
                                                                      self.sample,
                                                                      self.settings.gtf,
                                                                      self.ram_bamsort,
+                                                                     self.settings.nproc,
                                                                      self.phred)
 
             self.cmds["renaming the bam"] = "mv {}/Aligned.sortedByCoord.out.bam " \
-                                            "{}/{}.SortedByCoord.bam".format(self.out,
-                                                                             self.out,
-                                                                             self.sample)
+                                            "{}/{}.{}".format(self.out,
+                                                              self.out,
+                                                              self.sample,
+                                                              self.settings.suffix_bam)
 
-            self.results["STAR mapping"] = ["{}/{}.SortedByCoord.bam".format(self.out, self.sample)]
+            self.results["STAR mapping"] = ["{}/{}.{}".format(self.out, self.sample, self.settings.suffix_bam)]
 
 
 class StarTransBam(Star):

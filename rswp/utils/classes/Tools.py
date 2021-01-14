@@ -141,3 +141,7 @@ class Tools:
     def __add__(self, dict_cmd_add):
         for key in sorted(dict_cmd_add):
             self.cmds[key] = self.cmds[key] + " {}".format(dict_cmd_add[key])
+
+    def __sub__(self, dict_cmd_del):
+        for key in sorted(dict_cmd_del):
+            self.cmds[key] = self.cmds[key].replace(" {}".format(dict_cmd_del[key]), "")
