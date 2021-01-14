@@ -17,7 +17,7 @@ class Salmon(Tools):
         self.cmds["Salmon quantification"] = "salmon quant -l A " \
                                              "-p {} " \
                                              "-i {} " \
-                                             "--geneMap {}" \
+                                             "--geneMap {} " \
                                              "-1 {} " \
                                              "-2 {} " \
                                              "-o {}" \
@@ -32,4 +32,4 @@ class Salmon(Tools):
 
         self.results["Salmon quantification"] = ["{}/quant.sf".format(self.out)]
         if self.settings.suffix_fq.endswith("gz"):
-            self.results["Salmon quantification"] = self.results["Salmon quantification"] + ".gz"
+            self.results["Salmon quantification"][0] = self.results["Salmon quantification"][0] + ".gz"
