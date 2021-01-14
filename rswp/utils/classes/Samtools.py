@@ -11,5 +11,5 @@ class Samtools(Tools):
                                    self.sample,
                                    self.settings.suffix_bam)
         if self.mode == "index":
-            self.cmds["indexing bam"] = "samtools index -@ {} {}".format(self.settings.nproc, bam)
-            self.results["indexing bam"] = [bam + ".bai"]
+            self.cmds["SAMtools indexing"] = "samtools index -@ {} {}".format(self.settings.nproc, bam)
+            self.results["SAMtools indexing"] = [bam + ".bai"]
