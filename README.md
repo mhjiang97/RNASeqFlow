@@ -44,6 +44,12 @@ Minghao Jiang, <jiangminghao1001@163.com>
 ## Features
   
 ### 1. Run one tool on a list of samples  
+- download the rswp package:
+  
+    ```bash
+    git clone https://github.com/mhjiang97/RNASeqFlow.git
+    cd rswp
+    ```  
 - get help first:
   
     ```bash
