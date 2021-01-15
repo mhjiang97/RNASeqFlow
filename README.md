@@ -1,4 +1,4 @@
-# RSWP: RNA-seq Workflow by Python
+# RSWP: RNA-seq Workflow by Python <img src="https://github.com/mhjiang97/RNASeqFlow/rswp/utils/sticker/sticker.png" align="right" height=150 width=140/>
 ## _a library for easy RNA-seq analysis_  
 _(note: only for paired-end data so far and upgrade your python to 3.9)_  
 
