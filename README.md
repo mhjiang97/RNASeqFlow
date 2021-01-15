@@ -58,6 +58,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
 - run star with a file with sample ids:
     
     ```bash
+    ##### build an index first #####
     python rswp.py star --build_index --dir_index ${my_star_index} --gtf ${gtf_file} --fa ${fa_file}
     
     for i in {1..5}
