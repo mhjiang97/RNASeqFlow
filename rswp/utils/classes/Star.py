@@ -43,7 +43,7 @@ class Star(Tools):
                                         "--outSAMattrRGline ID:{} SM:{} LB:RNA PL:ILLUMINA " \
                                         "--sjdbGTFfile {} " \
                                         "--limitBAMsortRAM {} " \
-                                        "--outBAMsortingThreadN {}" \
+                                        "--outBAMsortingThreadN {} " \
                                         "--readQualityScoreBase {} " \
                                         "--outBAMcompression 10 " \
                                         "--sjdbOverhang 100 " \
