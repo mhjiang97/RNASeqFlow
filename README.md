@@ -52,21 +52,22 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ##### install required python modules #####
     pip install -r requirements.txt
     cd rswp
+    echo "export PATH=${PATH}:`pwd`" >> ~/.bashrc
     ```  
 - get help first:
   
     ```bash
-    python rswp.py star -h
+    rswp.py star -h
     ```  
 - run star with a file with sample ids:
     
     ```bash
     ##### build an index first #####
-    python rswp.py star --build_index --dir_index ${my_star_index} --gtf ${gtf_file} --fa ${fa_file}
+    rswp.py star --build_index --dir_index ${my_star_index} --gtf ${gtf_file} --fa ${fa_file}
     
     for i in {1..5}
     do
-        python rswp.py star --index ${i} --samples samples.txt --dir_index ${my_star_index} --dir_fq ${fq_dir} &
+        rswp.py star --index ${i} --samples samples.txt --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```  
 - run star with samples available on the command line:
@@ -74,7 +75,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```bash
     for i in {1..5}
     do
-        python rswp.py star --index ${i} --samples M1 M2 M3 M4 M5 --dir_index ${my_star_index} --dir_fq ${fq_dir} &
+        rswp.py star --index ${i} --samples M1 M2 M3 M4 M5 --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```  
 - or you can also call star like:
@@ -82,7 +83,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```bash
     for s in M1 M2 M3 M4 M5
     do
-        python rswp.py star --samples ${s} --dir_index ${my_star_index} --dir_fq ${fq_dir} &
+        rswp.py star --samples ${s} --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```
   
@@ -95,8 +96,8 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ### ...          ###
     ### at bottom:   ###
     ####################
-    python ${rswp} star --samples "${sample}" --config "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
-    python ${rswp} rsem --samples "${sample}" --config "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
+    rswp.py star --samples "${sample}" --config "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
+    rswp.py rsem --samples "${sample}" --config "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
     ```  
 - run.sh expects two parameters "-s" and "-c", which represent "sample" and "config" respectively:
   
@@ -166,7 +167,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
 - remember: command line parameters always take precedence over corresponding settings in the config:
   
     ```bash
-    python rswp.py star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a  
+    rswp.py star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a  
     ```  
     the code above will run star mapping against `~/doc/reference/mouse/star_2.7.5a` instead of `~/doc/reference/star_2.7.5a`
   
@@ -175,7 +176,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
   so you can check if commands are what you want:
   
     ```bash
-    python rswp.py star --samples M1 --config config.yaml --no-run
+    rswp.py star --samples M1 --config config.yaml --no-run
     ```
   
 ## License  

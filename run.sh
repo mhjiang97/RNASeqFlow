@@ -23,7 +23,6 @@ then
   exit 1
 fi
 
-rswp=./rswp/rswp.py
 while getopts 's:c:h' OPT
 do
   case $OPT in
@@ -54,5 +53,5 @@ fi
 
 #echo "${sample}"
 #echo "${config}"
-python ${rswp} star -s "${sample}" -c "${config}" --no-run
-python ${rswp} rsem -s "${sample}" -c "${config}" --no-run
+python rswp.py star -s "${sample}" -c "${config}" --no-run
+python rswp.py rsem -s "${sample}" -c "${config}" --no-run
