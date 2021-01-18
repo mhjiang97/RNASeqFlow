@@ -52,7 +52,8 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ##### install required python modules #####
     pip install -r requirements.txt
     cd rswp
-    echo "export PATH=${PATH}:`pwd`" >> ~/.bashrc
+    ##### add dir RNASeqFlow/rswp/ to your PATH #####
+    echo -e "\nexport PATH=\${PATH}:`pwd`" >> ~/.bashrc
     ```  
 - get help first:
   
