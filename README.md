@@ -48,6 +48,9 @@ Minghao Jiang, <jiangminghao1001@163.com>
   
     ```bash
     git clone https://github.com/mhjiang97/RNASeqFlow.git
+    cd RNASeqFlow
+    ##### install required python modules #####
+    pip install -r requirements.txt
     cd rswp
     ```  
 - get help first:
