@@ -20,9 +20,11 @@ class Rsem(Tools):
                                                                 self.settings.fa,
                                                                 self.prefix_reference)
         else:
-            bam = "{}/{}/{}.Transcriptome.bam".format("/".join(self.settings.dir_bam),
-                                                            self.sample,
-                                                            self.sample)
+            try:
+                d_b = np.array(self.settings.dir_bam).flatten().tolist()
+            except TypeError:
+                d_b = self.settings.dir_bam
+            bam = "{}/{}/{}.Transcriptome.bam".format("/".join(d_b), self.sample, self.sample)
             self.createOut(self.name_rsem_dir)
             if not os.path.exists(os.path.expanduser(self.out)):
                 self.cmds["creating dir"] = "mkdir -p {}".format(self.out)
