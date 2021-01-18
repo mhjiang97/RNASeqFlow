@@ -20,7 +20,7 @@ class Salmon(Tools):
                                              "--geneMap {} " \
                                              "-1 {} " \
                                              "-2 {} " \
-                                             "-o {}" \
+                                             "-o {} " \
                                              "--validateMappings " \
                                              "--gcBias " \
                                              "--seqBias".format(self.settings.nproc,

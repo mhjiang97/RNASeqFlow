@@ -93,12 +93,12 @@ class Tools:
                 myNotification()
                 sys.stderr.write("stderr from {}:\n{}".format(cmd_name, err))
                 if subp.poll() == 0:
-                    sys.stdout.write(colorama.Fore.GREEN +
-                                     "\n\n===== [NOTIFICATION {}] Step '{}' Finished Successfully! =====\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                    myNotification()
+                    sys.stdout.write("===== Step '{}' Finished Successfully! =====\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                                                                                                                    cmd_name))
                 else:
-                    sys.stderr.write(colorama.Fore.RED +
-                                     "\n\n***** [ERROR {}] Step '{}' Failed! *****\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                    myError()
+                    sys.stderr.write("***** Step '{}' Failed! *****\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                                                                                              cmd_name))
                     sys.exit(1)
         sys.exit(0)
