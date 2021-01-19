@@ -94,12 +94,10 @@ class Tools:
                 sys.stderr.write("stderr from {}:\n{}".format(cmd_name, err))
                 if subp.poll() == 0:
                     myNotification()
-                    sys.stdout.write("===== Step '{}' Finished Successfully! =====\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                                                                                                                   cmd_name))
+                    sys.stdout.write("===== Step '{}' Finished Successfully! =====\n".format(cmd_name))
                 else:
                     myError()
-                    sys.stderr.write("***** Step '{}' Failed! *****\n".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-                                                                                             cmd_name))
+                    sys.stderr.write("***** Step '{}' Failed! *****\n".format(cmd_name))
                     sys.exit(1)
         sys.exit(0)
 
