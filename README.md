@@ -60,7 +60,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```bash
     rswp.py star -h
     ```  
-- run star with a file with sample ids:
+- run `STAR` with a file with sample ids:
     
     ```bash
     ##### build an index first #####
@@ -71,7 +71,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         rswp.py star --index ${i} --samples samples.txt --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```  
-- run star with samples available on the command line:
+- run `STAR` with samples available on the command line:
   
     ```bash
     for i in {1..5}
@@ -79,7 +79,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         rswp.py star --index ${i} --samples M1 M2 M3 M4 M5 --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```  
-- or you can also call star like:
+- or you can also call `STAR` like:
   
     ```bash
     for s in M1 M2 M3 M4 M5
@@ -100,7 +100,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     rswp.py star --samples "${sample}" --config "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
     rswp.py rsem --samples "${sample}" --config "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
     ```  
-- run.sh expects two parameters "-s" and "-c", which represent "sample" and "config" respectively:
+- run.sh expects two arguments "-s" and "-c", which represent "sample" and "config" respectively:
   
     ```bash
     for s in M1 M2 M3 M4 M5
@@ -108,7 +108,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         bash run.sh -s ${s} -c config.yaml &
     done
     ```  
-- if you pass nothing to parameter s, please give the run.sh two positional parameters:
+- if you pass nothing to flag s, please give the run.sh two positional parameters:
   
     ```bash
     for i in {1..5}
@@ -173,7 +173,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     the code above will run star mapping against `~/doc/reference/mouse/star_2.7.5a` instead of `~/doc/reference/star_2.7.5a`
   
 ### 5. Check commands  
-- add --no-run to rswp, and it will not call subprocess.Popen() but only print commands on the screen,
+- add `--no-run` to rswp, and it will not call `subprocess.Popen()` but only print commands on the screen,
   so you can check if commands are what you want:
   
     ```bash

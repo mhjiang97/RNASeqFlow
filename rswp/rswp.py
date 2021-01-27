@@ -37,10 +37,10 @@ def main():
                                help = "print tool classes details before running commands or not")
     parser_common.add_argument("-i", "--index", type = int, metavar = "1, 2, 3, ...",
                                help = "which sample to run. "
-                                      "[Default: {}] means run the first sample.This parameter will be very useful when being in a loop".format(defaults.defaults_common["index"]))
+                                      "[Default: {}] means run the first sample.This flag will be very useful when being in a loop".format(defaults.defaults_common["index"]))
     parser_common.add_argument("-c", "--config", dest = "yaml_file", type = argparse.FileType('r'), metavar = "",
                                help = "a config file in yaml format having 2 hierarchies. "
-                                      "No default value, so complement all non-default parameters if you don't have one")
+                                      "No default value, so complement all non-default arguments if you don't have one")
     parser_common.add_argument("-s", "--samples", nargs = "+", metavar = ('samples.txt or', 'id_1 id_2'),
                                help = "either a file incorporating sample ids without a header or a list of sample ids")
     parser_common.add_argument("-d", "--dir_project", type = str, metavar = "",
@@ -85,7 +85,7 @@ def main():
                              help = "generate an additional transcript bam or not")
     parser_star.add_argument("--ram_bamsort", type = int, metavar = "",
                              help = "an error maybe occur when sorting the bam. "
-                                    "If so, set this parameter higher [Default: {}]".format(defaults.defaults_star["ram_bamsort"]))
+                                    "If so, set this argument higher [Default: {}]".format(defaults.defaults_star["ram_bamsort"]))
     parser_star.add_argument("--soft_clip", action = argparse.BooleanOptionalAction, default = None, metavar = "",
                              help = "set '--no-soft_clip' will add '--alignEndsType EndToEnd' to STAR mapping command to suppress soft-clip")
     parser_star.add_argument("--phred", type = int, metavar = "", help = "note that phred33 is predominant now. "
