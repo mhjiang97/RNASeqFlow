@@ -53,7 +53,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     pip install -r requirements.txt
     cd rswp
     ##### add dir RNASeqFlow/rswp/ to your PATH #####
-    echo -e "\nexport PATH=\${PATH}:`pwd`" >> ~/.bashrc
+    echo -e "\n# >>> rswp initialize >>>\nexport PATH=\${PATH}:`pwd`/\n# <<< rswp initialize <<<\n" >> ~/.bashrc
     ```  
 - get help first:
   
