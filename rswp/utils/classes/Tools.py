@@ -138,7 +138,12 @@ class Tools:
 
     def __add__(self, dict_cmd_add):
         for key in sorted(dict_cmd_add):
-            self.cmds[key] = self.cmds[key] + " {}".format(dict_cmd_add[key])
+            try:
+                self.cmds[key] = self.cmds[key] + " {}".format(dict_cmd_add[key])
+            except KeyError:
+                myError()
+                sys.stderr.write("'{}' is not a correct command name of this tool. Please check it!".format(key))
+                sys.exit(1)
 
     def __sub__(self, dict_cmd_del):
         for key in sorted(dict_cmd_del):

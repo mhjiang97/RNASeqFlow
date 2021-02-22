@@ -185,9 +185,7 @@ def main():
     ##### update settings and reload samples #####
     common.subSet(defaults.defaults_common)
     common.loadSampleIds()
-    #print(defaults.defaults_settings)
     settings.subSet(common, defaults.defaults_settings)
-    #print(settings.suffix_fq, settings.suffix_bam)
 
     ##### call different functions according to sub commands #####
     args.func(args, common, settings)
