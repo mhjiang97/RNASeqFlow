@@ -17,4 +17,5 @@ def rsem(args, common, settings):
         myrsem = Rsem(args.fq, args.path_bowtie2, args.prepare_reference, args.prefix_reference, args.name_rsem_dir, common, settings)
     myrsem.subSet(defaults.defaults_rsem)
     myrsem.generateCmds()
+    addCmd(myrsem, myrsem.name, myrsem.common.add)
     myrsem.runCmds()

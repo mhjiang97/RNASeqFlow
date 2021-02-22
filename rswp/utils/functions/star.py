@@ -21,8 +21,7 @@ def star(args, common, settings):
                       args.phred, common, settings)
     mystar.subSet(defaults.defaults_star)
     mystar.generateCmds()
-
     if not mystar.soft_clip:
         mystar + dict(zip(["STAR mapping"], ["--alignEndsType EndToEnd"]))
-
+    addCmd(mystar, mystar.name, mystar.common.add)
     mystar.runCmds()

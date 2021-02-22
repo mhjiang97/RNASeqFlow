@@ -1,4 +1,4 @@
-import argparse, copy
+import argparse, copy, ast
 
 def newSubparser():
     return argparse.ArgumentParser(add_help = False, formatter_class = argparse.RawTextHelpFormatter)
@@ -24,3 +24,11 @@ def mySub(dict_class, dict_yaml, dict_default):
             continue
 
     return mydict
+
+def addCmd(instance_tool, name_tool, str_dict_add):
+    dict_add = ast.literal_eval(str_dict_add)
+    try:
+        dict_add_sub = dict_add[name_tool]
+    except KeyError:
+        return instance_tool
+    instance_tool + dict_add_sub

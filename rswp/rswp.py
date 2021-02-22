@@ -50,6 +50,7 @@ def main():
                                help = "run shell scripts or only print them on the screen")
     parser_common.add_argument("--check", action = argparse.BooleanOptionalAction, default = None, metavar = "",
                                help = "if result files exit program will exit with an error")
+    parser_common.add_argument("--add", type = str, metavar = "")
 
     ## ----- paths or necessary files settings ----- ##
     parser_settings = parser_groups.add_argument_group(title = "PATHS SETTINGS",
@@ -174,8 +175,8 @@ def main():
         sys.exit(0)
 
     ##### common and paths settings classes #####
-    common = Common.Common(args.print_class, args.index, args.yaml_file,
-                           args.samples, args.dir_project, args.run, args.check)
+    common = Common.Common(args.print_class, args.index, args.yaml_file, args.samples,
+                           args.dir_project, args.run, args.check, args.add)
     settings = Settings.Settings(args.nproc, args.gtf, args.fa, args.suffix_fq, args.suffix_bam, args.dir_fq, args.dir_bam)
 
     common.loadSampleIds()

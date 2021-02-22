@@ -3,7 +3,7 @@ import yaml
 from ..utils import *
 
 class Common:
-    def __init__(self, print_class, index, yaml_file, samples, dir_project, run, check):
+    def __init__(self, print_class, index, yaml_file, samples, dir_project, run, check, add):
         self.print_class = print_class
         self.index = index
         self.yaml_file = yaml_file
@@ -11,6 +11,7 @@ class Common:
         self.dir_project = dir_project
         self.run = run
         self.check = check
+        self.add = add
 
         self.dict_yaml = {}
         self.list_ids = []
