@@ -3,7 +3,7 @@ import yaml
 from ..utils import *
 
 class Common:
-    def __init__(self, print_class, index, yaml_file, samples, dir_project, run, check, add):
+    def __init__(self, print_class, index, yaml_file, samples, dir_project, run, check, add, sub):
         self.print_class = print_class
         self.index = index
         self.yaml_file = yaml_file
@@ -12,6 +12,7 @@ class Common:
         self.run = run
         self.check = check
         self.add = add
+        self.sub = sub
 
         self.dict_yaml = {}
         self.list_ids = []
@@ -21,9 +22,10 @@ class Common:
         if self.yaml_file == "":
             return 0
         if self.yaml_file:
-            y = yaml.load(self.yaml_file, Loader = yaml.FullLoader)
+            with self.yaml_file as yf:
+                y = yaml.load(yf, Loader = yaml.FullLoader)
             self.dict_yaml.update(y)
-            self.yaml_file.close()
+            # self.yaml_file.close()
         self.yaml_file = {"yaml_file":"dict loaded, closed and attribute unloaded"}
 
     def returnSubSettings(self, title):

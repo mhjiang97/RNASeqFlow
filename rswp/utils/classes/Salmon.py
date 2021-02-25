@@ -21,6 +21,7 @@ class Salmon(Tools):
                                              "-1 {} " \
                                              "-2 {} " \
                                              "-o {} " \
+                                             "--keepDuplicates " \
                                              "--validateMappings " \
                                              "--gcBias " \
                                              "--seqBias".format(self.settings.nproc,

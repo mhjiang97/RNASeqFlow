@@ -2,13 +2,14 @@ from ..classes.Tools import *
 
 class Star(Tools):
     def __init__(self, build_index, dir_index, name_star_dir,
-                 transcript_bam, ram_bamsort, soft_clip,
+                 transcript_bam, gene_counts, ram_bamsort, soft_clip,
                  phred, common, settings):
         Tools.__init__(self, name = "STAR", common = common, settings = settings)
         self.build_index = build_index
         self.dir_index = dir_index
         self.name_star_dir = name_star_dir
         self.transcript_bam = transcript_bam
+        self.gene_counts = gene_counts
         self.ram_bamsort = ram_bamsort
         self.soft_clip = soft_clip
         self.phred = phred
@@ -73,11 +74,11 @@ class Star(Tools):
 
 class StarTransBam(Star):
     def __init__(self, build_index, dir_index, name_star_dir,
-                 transcript_bam, ram_bamsort, soft_clip,
+                 transcript_bam, gene_counts, ram_bamsort, soft_clip,
                  phred, common, settings):
         Star.__init__(self, build_index = build_index, dir_index = dir_index, name_star_dir = name_star_dir,
-                      transcript_bam = transcript_bam, ram_bamsort = ram_bamsort, soft_clip = soft_clip,
-                      phred = phred, common = common, settings = settings)
+                      transcript_bam = transcript_bam, gene_counts = gene_counts, ram_bamsort = ram_bamsort,
+                      soft_clip = soft_clip, phred = phred, common = common, settings = settings)
     def action(self):
         if self.build_index:
             myError()
@@ -86,7 +87,7 @@ class StarTransBam(Star):
             sys.exit(1)
         else:
             Star.action(self)
-            self.cmds["STAR mapping"] = self.cmds["STAR mapping"] + " --quantMode TranscriptomeSAM GeneCounts"
+            self.cmds["STAR mapping"] = self.cmds["STAR mapping"] + " --quantMode TranscriptomeSAM"
             self.cmds["renaming the transcript bam"] = "mv {}/Aligned.toTranscriptome.out.bam " \
                                                        "{}/{}.Transcriptome.bam".format(self.out,
                                                                                         self.out,

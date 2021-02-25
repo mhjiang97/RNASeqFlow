@@ -142,9 +142,18 @@ class Tools:
                 self.cmds[key] = self.cmds[key] + " {}".format(dict_cmd_add[key])
             except KeyError:
                 myError()
-                sys.stderr.write("'{}' is not a correct command name of this tool. Please check it!".format(key))
+                sys.stderr.write("""'{}' is not a correct command name of this tool.\n
+                                 Addition '+' can't be calculated.\n
+                                 Please check it!\n""".format(key))
                 sys.exit(1)
 
     def __sub__(self, dict_cmd_del):
         for key in sorted(dict_cmd_del):
-            self.cmds[key] = self.cmds[key].replace(" {}".format(dict_cmd_del[key]), "")
+            try:
+                self.cmds[key] = self.cmds[key].replace(" {}".format(dict_cmd_del[key]), "")
+            except KeyError:
+                myError()
+                sys.stderr.write("""'{}' is not a correct command name of this tool.\n
+                                 Subtraction '-' can't be calculated.\n
+                                 Please check it!\n""".format(key))
+                sys.exit(1)

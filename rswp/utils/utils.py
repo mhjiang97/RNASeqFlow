@@ -25,10 +25,24 @@ def mySub(dict_class, dict_yaml, dict_default):
 
     return mydict
 
-def addCmd(instance_tool, name_tool, str_dict_add):
+def addCmd(instance_tool, name_tool, str_dict_add = None):
+    if str_dict_add is None:
+        return instance_tool
+
     dict_add = ast.literal_eval(str_dict_add)
     try:
         dict_add_sub = dict_add[name_tool]
     except KeyError:
         return instance_tool
     instance_tool + dict_add_sub
+
+def minusCmd(instance_tool, name_tool, str_dict_minus = None):
+    if str_dict_minus is None:
+        return instance_tool
+
+    dict_minus = ast.literal_eval(str_dict_minus)
+    try:
+        dict_add_sub = dict_minus[name_tool]
+    except KeyError:
+        return instance_tool
+    instance_tool - dict_add_sub

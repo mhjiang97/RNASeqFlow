@@ -50,7 +50,8 @@ def main():
                                help = "run shell scripts or only print them on the screen")
     parser_common.add_argument("--check", action = argparse.BooleanOptionalAction, default = None, metavar = "",
                                help = "if result files exit program will exit with an error")
-    parser_common.add_argument("--add", type = str, metavar = "")
+    parser_common.add_argument("--add", type = str, default = None, metavar = "")
+    parser_common.add_argument("--sub", type = str, default = None, metavar = "")
 
     ## ----- paths or necessary files settings ----- ##
     parser_settings = parser_groups.add_argument_group(title = "PATHS SETTINGS",
@@ -84,6 +85,8 @@ def main():
                                     "Can be set as 'star/subdir' to store outputs in a subfolder [Default: {}]".format(defaults.defaults_star["name_star_dir"]))
     parser_star.add_argument("--transcript_bam", action = argparse.BooleanOptionalAction, default = None, metavar = "",
                              help = "generate an additional transcript bam or not")
+    parser_star.add_argument("--gene_counts", action = argparse.BooleanOptionalAction, default = None, metavar = "",
+                             help = "count number of reads per gene or not")
     parser_star.add_argument("--ram_bamsort", type = int, metavar = "",
                              help = "an error maybe occur when sorting the bam. "
                                     "If so, set this argument higher [Default: {}]".format(defaults.defaults_star["ram_bamsort"]))
@@ -176,7 +179,7 @@ def main():
 
     ##### common and paths settings classes #####
     common = Common.Common(args.print_class, args.index, args.yaml_file, args.samples,
-                           args.dir_project, args.run, args.check, args.add)
+                           args.dir_project, args.run, args.check, args.add, args.sub)
     settings = Settings.Settings(args.nproc, args.gtf, args.fa, args.suffix_fq, args.suffix_bam, args.dir_fq, args.dir_bam)
 
     common.loadSampleIds()
