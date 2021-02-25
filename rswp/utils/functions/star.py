@@ -10,7 +10,7 @@ def star(args, common, settings):
             pass
     else:
         tb = args.transcript_bam
-    print(tb)
+
     if tb:
         mystar = StarTransBam(args.build_index, args.dir_index, args.name_star_dir,
                               args.transcript_bam, args.gene_counts, args.ram_bamsort,
