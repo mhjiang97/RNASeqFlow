@@ -1,4 +1,3 @@
-import numpy as np
 from ..utils import *
 
 class Settings:

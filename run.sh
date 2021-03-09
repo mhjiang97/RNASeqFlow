@@ -51,7 +51,8 @@ then
   sample=$(gsed -n "${index}p" "${file}")
 fi
 
-#echo "${sample}"
-#echo "${config}"
+# echo "${sample}"
+# echo "${config}"
 python rswp.py star -s "${sample}" -c "${config}" --no-run
 python rswp.py rsem -s "${sample}" -c "${config}" --no-run
+

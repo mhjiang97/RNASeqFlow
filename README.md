@@ -1,7 +1,7 @@
-# RSWP: RNA-seq Workflow by Python <img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/rswp/utils/sticker/sticker.png" align="right" height=150 width=140/>
-## _a library for easy RNA-seq analysis_  
-_(note: only for paired-end data so far and upgrade your python to 3.9)_  
-
+# RSWP: RNA-seq Workflow by Python <img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/rswp/utils/sticker/sticker.pdf" align="right" height=150 width=140/>  
+## _A library for easy RNA-seq analysis_  
+_(Note: only for paired-end data so far and upgrade your python to 3.9)_
+  
 -----------
 ## Author  
 Minghao Jiang, <jiangminghao1001@163.com>  
@@ -44,7 +44,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
 ## Features
   
 ### 1. Run one tool on a list of samples  
-- download the rswp package:
+- Download the rswp package:
   
     ```bash
     git clone https://github.com/mhjiang97/RNASeqFlow.git
@@ -55,12 +55,12 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ##### add dir RNASeqFlow/rswp/ to your PATH #####
     echo -e "\n# >>> rswp initialize >>>\nexport PATH=\${PATH}:`pwd`/\n# <<< rswp initialize <<<\n" >> ~/.bashrc
     ```  
-- get help first:
+- Get help first:
   
     ```bash
     rswp.py star -h
     ```  
-- run `STAR` with a file with sample ids:
+- Run `STAR` with a file with sample ids:
     
     ```bash
     ##### build an index first #####
@@ -71,7 +71,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         rswp.py star --index ${i} --samples samples.txt --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```  
-- run `STAR` with samples available on the command line:
+- Run `STAR` with samples available on the command line:
   
     ```bash
     for i in {1..5}
@@ -79,7 +79,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         rswp.py star --index ${i} --samples M1 M2 M3 M4 M5 --dir_index ${my_star_index} --dir_fq ${fq_dir} &
     done
     ```  
-- or you can also call `STAR` like:
+- Or you can also call `STAR` like:
   
     ```bash
     for s in M1 M2 M3 M4 M5
@@ -89,7 +89,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```
   
 ### 2. Run a workflow on a list of samples  
-- first modify the run.sh at the bottom to encapsulate a workflow you prefer:
+- First modify the run.sh at the bottom to encapsulate a workflow you prefer:
   
     ```shell
     ####################
@@ -100,7 +100,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     rswp.py star --samples "${sample}" --config "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
     rswp.py rsem --samples "${sample}" --config "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
     ```  
-- run.sh expects two arguments "-s" and "-c", which represent "sample" and "config" respectively:
+- `run.sh` expects two arguments "-s" and "-c", which represent "sample" and "config" respectively:
   
     ```bash
     for s in M1 M2 M3 M4 M5
@@ -108,7 +108,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
         bash run.sh -s ${s} -c config.yaml &
     done
     ```  
-- if you pass nothing to flag s, please give the run.sh two positional parameters:
+- If you pass nothing to flag s, please give the run.sh two positional parameters:
   
     ```bash
     for i in {1..5}
@@ -118,7 +118,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     ```  
   
 ### 3. Run workflow on cluster  
-- a sample sbatch file is like:
+- A sample sbatch file is like:
   
     ```bash
     cat workflow.sbatch
@@ -136,14 +136,14 @@ Minghao Jiang, <jiangminghao1001@163.com>
     #SBATCH --array=1-5
     bash run.sh -c config.yaml samples.txt ${SLURM_ARRAY_TASK_ID}
     ```  
-- then submit it to the computing node:
+- Then submit it to the computing node:
   
     ```bash
     sbatch workflow.sbatch
     ```  
   
 ### 4. Config based  
-- a config file must be in yaml format and have at least two hierarchies:
+- A config file must be in yaml format and have at least two hierarchies:
   
     ```yaml
     ###########################
@@ -165,7 +165,7 @@ Minghao Jiang, <jiangminghao1001@163.com>
     RSEM:
         prefix_reference: ~/doc/reference/rsem/index  
     ```  
-- remember: command line parameters always take precedence over corresponding settings in the config:
+- Remember: command line parameters always take precedence over corresponding settings in the config:
   
     ```bash
     rswp.py star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a  
@@ -173,11 +173,23 @@ Minghao Jiang, <jiangminghao1001@163.com>
     the code above will run star mapping against `~/doc/reference/mouse/star_2.7.5a` instead of `~/doc/reference/star_2.7.5a`
   
 ### 5. Check commands  
-- add `--no-run` to rswp, and it will not call `subprocess.Popen()` but only print commands on the screen,
+- Add `--no-run` to rswp, and it will not call `subprocess.Popen()` but only print commands on the screen,
   so you can check if commands are what you want:
   
     ```bash
     rswp.py star --samples M1 --config config.yaml --no-run
+    ```
+  
+### 6. Add or delete flags after checking  
+- After running rswp.py with --no-run, you already manually check if the commands are what you desired.  
+- If you're going to modify commands without editing source codes, use `--add` to give specific steps more arguments 
+or use `--sub` to eliminate ones that didn't meet your requirements:  
+  
+    ```bash
+    ### check commands
+    rswp.py salmon --samples M1 --config config.yaml --no-run
+    ### add some arguments
+    rswp.py salmon --samples M1 --config config.yaml --add '{"Salmon":{"Salmon quantification":"--dumpEq --numBootstraps 100"}}'
     ```
   
 ## License  

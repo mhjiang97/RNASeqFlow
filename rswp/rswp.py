@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, textwrap, colorama
+import textwrap
 from utils.functions import *
 from utils.classes import *
 from utils import defaults

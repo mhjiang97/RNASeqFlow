@@ -1,15 +1,9 @@
-import sys, subprocess, os, time, colorama
+import subprocess, os
 import numpy as np
 from ..utils import *
 from collections import OrderedDict
 
 colorama.init(autoreset = True)
-def myNotification():
-    sys.stdout.write(colorama.Fore.GREEN + "\n\n[NOTIFICATION {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-def myError():
-    sys.stderr.write(colorama.Fore.RED + "\n\n[ERROR {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-def myWarning():
-    sys.stdout.write(colorama.Fore.YELLOW + "\n\n[WARNING {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
 
 class Tools:
     def __init__(self, name, common, settings):
@@ -58,7 +52,7 @@ class Tools:
                                 sys.stdout.write("'{}' Exits! "
                                                  "Workflow will Quit!\n".format(result))
                                 a[i] = True
-                                #sys.exit(1)
+                                # sys.exit(1)
                             else:
                                 myWarning()
                                 sys.stdout.write("'{}' Exits! But It's Empty! "
@@ -70,9 +64,10 @@ class Tools:
                     if sum(a):
                         myError()
                         sys.stdout.write("Program Exits with Error!\n"
-                                         "Remove '{}' and Run Again if You'd Like to Rerun {} on {}\n".format(" and ".join(np.array(self.results[cmd_name])[a]),
-                                                                                                              self.name,
-                                                                                                              self.sample))
+                                         "Remove '{}' and Run Again "
+                                         "if You'd Like to Rerun {} on {}\n".format(" and ".join(np.array(self.results[cmd_name])[a]),
+                                                                                                          self.name,
+                                                                                                          self.sample))
                         sys.exit(1)
                 except KeyError:
                     pass
@@ -82,11 +77,12 @@ class Tools:
             sys.stdout.write("The Step Running is {}:\nCommand: {}\n".format(cmd_name, cmd))
 
             if self.common.run:
+                time_start = time.time()
                 subp = subprocess.Popen(cmd, shell = True,
                                         stdout = subprocess.PIPE,
                                         stderr = subprocess.PIPE,
                                         encoding = "utf-8")
-                #subp.wait()
+                # subp.wait()
                 (out, err) = subp.communicate()
                 myNotification()
                 sys.stdout.write("stdout from {}:\n{}".format(cmd_name, out))
@@ -95,9 +91,13 @@ class Tools:
                 if subp.poll() == 0:
                     myNotification()
                     sys.stdout.write("===== Step '{}' Finished Successfully! =====\n".format(cmd_name))
+                    time_success = time.time()
+                    timeConsume(time_start, time_success)
                 else:
                     myError()
                     sys.stderr.write("***** Step '{}' Failed! *****\n".format(cmd_name))
+                    time_fail = time.time()
+                    timeConsume(time_start, time_fail)
                     sys.exit(1)
         sys.exit(0)
 
