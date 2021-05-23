@@ -57,8 +57,10 @@ def minusCmd(instance_tool, name_tool, str_dict_minus = None):
     instance_tool - dict_add_sub
 
 def timeConsume(time_start, time_end):
-    time_elapsed = time_end - time_start
-    # time_elapsed_hr = int(time_elapsed / 120)
-    # time_elapsed_min = int((time_elapsed - (time_elapsed_hr * 120)) / 60)
-    # time_elapsed_sec = int(time_elapsed - (time_elapsed_hr * 120 + time_elapsed_min * 60))
-    sys.stdout.write("It Takes {} in Total.\n".format(str(time_elapsed)))
+    time_elapsed = float(str(time_end - time_start))
+    time_elapsed_hr = int(time_elapsed / 120)
+    time_elapsed_min = int((time_elapsed - (time_elapsed_hr * 120)) / 60)
+    time_elapsed_sec = time_elapsed - (time_elapsed_hr * 120 + time_elapsed_min * 60)
+    sys.stdout.write("It Takes {}:{}:{} in Total.\n".format(str(time_elapsed_hr),
+                                                                                  str(time_elapsed_min),
+                                                                                  str(time_elapsed_sec)))

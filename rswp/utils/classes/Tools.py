@@ -34,7 +34,7 @@ class Tools:
             sys.stdout.write(str(self))
 
         myNotification()
-        sys.stdout.write("All Commands Ready to Run in Queue:".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+        sys.stdout.write("All Commands Ready to Run in Queue:")
 
         for cmd_name in self.cmds.keys():
             sys.stdout.write("\n{}: {}\n".format(cmd_name, self.cmds[cmd_name]))
@@ -50,7 +50,7 @@ class Tools:
                             if size > 0:
                                 myWarning()
                                 sys.stdout.write("'{}' Exits! "
-                                                 "Workflow will Quit!\n".format(result))
+                                                 "Workflow Will Quit!\n".format(result))
                                 a[i] = True
                                 # sys.exit(1)
                             else:
@@ -63,7 +63,7 @@ class Tools:
 
                     if sum(a):
                         myError()
-                        sys.stdout.write("Program Exits with Error!\n"
+                        sys.stdout.write("Program Exits With Error!\n"
                                          "Remove '{}' and Run Again "
                                          "if You'd Like to Rerun {} on {}\n".format(" and ".join(np.array(self.results[cmd_name])[a]),
                                                                                                           self.name,
@@ -85,9 +85,9 @@ class Tools:
                 # subp.wait()
                 (out, err) = subp.communicate()
                 myNotification()
-                sys.stdout.write("stdout from {}:\n{}".format(cmd_name, out))
+                sys.stdout.write("Stdout From {}:\n{}".format(cmd_name, out))
                 myNotification()
-                sys.stderr.write("stderr from {}:\n{}".format(cmd_name, err))
+                sys.stderr.write("Stderr From {}:\n{}".format(cmd_name, err))
                 if subp.poll() == 0:
                     myNotification()
                     sys.stdout.write("===== Step '{}' Finished Successfully! =====\n".format(cmd_name))
@@ -142,9 +142,9 @@ class Tools:
                 self.cmds[key] = self.cmds[key] + " {}".format(dict_cmd_add[key])
             except KeyError:
                 myError()
-                sys.stderr.write("""'{}' is not a correct command name of this tool.\n
-                                 Addition '+' can't be calculated.\n
-                                 Please check it!\n""".format(key))
+                sys.stderr.write("""'{}' isn't a Correct Command Name of This Tool.\n
+                                 Addition '+' can't be Calculated.\n
+                                 Please Check It!\n""".format(key))
                 sys.exit(1)
 
     def __sub__(self, dict_cmd_del):
@@ -153,7 +153,7 @@ class Tools:
                 self.cmds[key] = self.cmds[key].replace(" {}".format(dict_cmd_del[key]), "")
             except KeyError:
                 myError()
-                sys.stderr.write("""'{}' is not a correct command name of this tool.\n
-                                 Subtraction '-' can't be calculated.\n
-                                 Please check it!\n""".format(key))
+                sys.stderr.write("""'{}' isn't a Correct Command Name of This Tool.\n
+                                 Subtraction '-' can't be Calculated.\n
+                                 Please Check It!\n""".format(key))
                 sys.exit(1)

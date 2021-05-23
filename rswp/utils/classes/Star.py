@@ -48,8 +48,10 @@ class Star(Tools):
                                         "--readQualityScoreBase {} " \
                                         "--outBAMcompression 10 " \
                                         "--sjdbOverhang 100 " \
+                                        "--outSAMattrIHstart 0 " \
                                         "--outSAMtype BAM SortedByCoordinate " \
                                         "--outSAMattributes NH XS HI AS nM NM MD jM jI MC ch " \
+                                        "--outSAMstrandField intronMotif " \
                                         "--twopassMode Basic".format(self.settings.nproc,
                                                                      self.dir_index,
                                                                      file_in1,

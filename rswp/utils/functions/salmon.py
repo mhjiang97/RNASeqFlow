@@ -6,4 +6,6 @@ def salmon(args, common, settings):
     mysalmon.subSet(defaults.defaults_salmon)
     mysalmon.generateCmds()
     addCmd(mysalmon, mysalmon.name, mysalmon.common.add)
+    if mysalmon.settings.gtf is None:
+        mysalmon - {"Salmon quantification": "--geneMap None"}
     mysalmon.runCmds()
