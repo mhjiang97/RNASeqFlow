@@ -30,6 +30,11 @@ class Salmon(Tools):
                                                                 file_in2,
                                                                 self.out)
 
-        self.results["Salmon quantification"] = ["{}/quant.sf".format(self.out)]
-        if self.settings.suffix_fq.endswith("gz"):
-            self.results["Salmon quantification"][0] = self.results["Salmon quantification"][0] + ".gz"
+        self.cmds["Compressing the sf file"] = "gzip {}/quant.sf".format(self.out)
+
+        if not self.settings.gtf is None:
+            self.cmds["Compressing the gene sf file"] = "gzip {}/quant.genes.sf".format(self.out)
+
+        self.results["Salmon quantification"] = ["{}/quant.sf.gz".format(self.out)]
+        if not self.settings.gtf is None:
+            self.results["Salmon gene quantification"] = ["{}/quant.genes.sf.gz".format(self.out)]
