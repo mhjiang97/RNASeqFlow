@@ -1,8 +1,8 @@
 # RSWP: RNA-seq Workflow by Python <img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/rswp/utils/sticker/sticker.png" align="right" height=150 width=140/>  
-## _A library for easy RNA-seq analysis_  
-_(Note: only for paired-end data so far and upgrade your python to 3.9)_
-  
------------
+
+<font size="2"> _A library for easy RNA-seq analysis_  
+_(Note: only for paired-end data so far and upgrade your python to 3.9)_ </font>
+
 ## Author  
 Minghao Jiang, <jiangminghao1001@163.com>  
 
@@ -10,6 +10,8 @@ Minghao Jiang, <jiangminghao1001@163.com>
 - [supported tools](#supported-tools)  
 - [features](#features)  
 - [license](#license)
+
+-----------
 
 ## Supported tools  
 **_make sure supported tools are executable in your PATH_**  
