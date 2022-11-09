@@ -30,4 +30,5 @@ def star(args, common, settings):
     if not mystar.soft_clip:
         mystar + dict(zip(["STAR mapping"], ["--alignEndsType EndToEnd"]))
     addCmd(mystar, mystar.name, mystar.common.add)
+    minusCmd(mystar, mystar.name, mystar.common.sub)
     mystar.runCmds()

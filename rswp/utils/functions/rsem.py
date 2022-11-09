@@ -18,4 +18,5 @@ def rsem(args, common, settings):
     myrsem.subSet(defaults.defaults_rsem)
     myrsem.generateCmds()
     addCmd(myrsem, myrsem.name, myrsem.common.add)
+    minusCmd(myrsem, myrsem.name, myrsem.common.sub)
     myrsem.runCmds()
