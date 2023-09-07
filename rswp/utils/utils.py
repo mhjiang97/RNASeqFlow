@@ -1,7 +1,11 @@
 import argparse, copy, ast, sys, colorama, time
 
+
 def newSubparser():
-    return argparse.ArgumentParser(add_help = False, formatter_class = argparse.RawTextHelpFormatter)
+    return argparse.ArgumentParser(
+        add_help=False, formatter_class=argparse.RawTextHelpFormatter
+    )
+
 
 def mySub(dict_class, dict_yaml, dict_default):
     mydict = copy.deepcopy(dict_class)
@@ -25,16 +29,33 @@ def mySub(dict_class, dict_yaml, dict_default):
 
     return mydict
 
+
 def myNotification():
-    sys.stdout.write(colorama.Fore.GREEN + "\n\n[NOTIFICATION {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    sys.stdout.write(
+        colorama.Fore.GREEN
+        + "\n\n[NOTIFICATION {}] ".format(
+            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        )
+    )
+
 
 def myError():
-    sys.stderr.write(colorama.Fore.RED + "\n\n[ERROR {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    sys.stderr.write(
+        colorama.Fore.RED
+        + "\n\n[ERROR {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    )
+
 
 def myWarning():
-    sys.stdout.write(colorama.Fore.YELLOW + "\n\n[WARNING {}] ".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    sys.stdout.write(
+        colorama.Fore.YELLOW
+        + "\n\n[WARNING {}] ".format(
+            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        )
+    )
 
-def addCmd(instance_tool, name_tool, str_dict_add = None):
+
+def addCmd(instance_tool, name_tool, str_dict_add=None):
     if str_dict_add is None:
         return instance_tool
 
@@ -45,7 +66,8 @@ def addCmd(instance_tool, name_tool, str_dict_add = None):
         return instance_tool
     instance_tool + dict_add_sub
 
-def minusCmd(instance_tool, name_tool, str_dict_minus = None):
+
+def minusCmd(instance_tool, name_tool, str_dict_minus=None):
     if str_dict_minus is None:
         return instance_tool
 
@@ -56,11 +78,14 @@ def minusCmd(instance_tool, name_tool, str_dict_minus = None):
         return instance_tool
     instance_tool - dict_add_sub
 
+
 def timeConsume(time_start, time_end):
     time_elapsed = float(str(time_end - time_start))
     time_elapsed_hr = int(time_elapsed / 120)
     time_elapsed_min = int((time_elapsed - (time_elapsed_hr * 120)) / 60)
     time_elapsed_sec = time_elapsed - (time_elapsed_hr * 120 + time_elapsed_min * 60)
-    sys.stdout.write("It Takes {}:{}:{} in Total.\n".format(str(time_elapsed_hr),
-                                                                                  str(time_elapsed_min),
-                                                                                  str(time_elapsed_sec)))
+    sys.stdout.write(
+        "It Takes {}:{}:{} in Total.\n".format(
+            str(time_elapsed_hr), str(time_elapsed_min), str(time_elapsed_sec)
+        )
+    )

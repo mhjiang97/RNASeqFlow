@@ -1,20 +1,22 @@
 import re, sys, os, argparse
+
+
 def main():
-    myparser = argparse.ArgumentParser(description = "generate a tx2gene file")
-    myparser.add_argument("-i", "--input", type = str, help = "input a gtf file")
-    myparser.add_argument("-o", "--output", type = str, help = "a file to output")
+    myparser = argparse.ArgumentParser(description="generate a tx2gene file")
+    myparser.add_argument("-i", "--input", type=str, help="input a gtf file")
+    myparser.add_argument("-o", "--output", type=str, help="a file to output")
     args = myparser.parse_args()
 
     tx_file = os.path.expanduser(args.input)
-    gene = re.compile("gene_id \"(.*?)\";")
-    iso = re.compile("transcript_id \"(.*?)\";")
+    gene = re.compile('gene_id "(.*?)";')
+    iso = re.compile('transcript_id "(.*?)";')
     tx_to_gene = {}
-    name = re.compile("gene_name \"(.*?)\";")
+    name = re.compile('gene_name "(.*?)";')
     tx_to_name = {}
     gene_to_chr = {}
-    with open(tx_file, 'r') as fh:
+    with open(tx_file, "r") as fh:
         for line in fh:
-            if line[0] == '#':
+            if line[0] == "#":
                 continue
             fields = line.strip().split("\t")
             if fields[2] == "gene":
@@ -53,6 +55,7 @@ def main():
         new_file.write(line_new)
 
     new_file.close()
+
 
 if __name__ == "__main__":
     main()

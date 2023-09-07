@@ -2,8 +2,11 @@ import numpy as np
 import yaml
 from ..utils import *
 
+
 class Common:
-    def __init__(self, print_class, index, yaml_file, samples, dir_project, run, check, add, sub):
+    def __init__(
+        self, print_class, index, yaml_file, samples, dir_project, run, check, add, sub
+    ):
         self.print_class = print_class
         self.index = index
         self.yaml_file = yaml_file
@@ -23,10 +26,10 @@ class Common:
             return 0
         if self.yaml_file:
             with self.yaml_file as yf:
-                y = yaml.load(yf, Loader = yaml.FullLoader)
+                y = yaml.load(yf, Loader=yaml.FullLoader)
             self.dict_yaml.update(y)
             # self.yaml_file.close()
-        self.yaml_file = {"yaml_file":"dict loaded, closed and attribute unloaded"}
+        self.yaml_file = {"yaml_file": "dict loaded, closed and attribute unloaded"}
 
     def returnSubSettings(self, title):
         try:
@@ -40,9 +43,13 @@ class Common:
             self.list_ids = []
             return 0
         if self.samples[0].endswith(".txt"):
-            self.list_ids.extend(np.loadtxt(self.samples[0], dtype = "unicode_"))
+            self.list_ids.extend(np.loadtxt(self.samples[0], dtype="unicode_"))
         else:
             self.list_ids.extend(self.samples)
 
     def subSet(self, dict_default):
-        self.__dict__ = mySub(dict_class = self.__dict__, dict_yaml = self.returnSubSettings("Common"), dict_default = dict_default)
+        self.__dict__ = mySub(
+            dict_class=self.__dict__,
+            dict_yaml=self.returnSubSettings("Common"),
+            dict_default=dict_default,
+        )
