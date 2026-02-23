@@ -1,6 +1,7 @@
 import numpy as np
 import yaml
-from ..utils import *
+
+from .utils import mySub
 
 
 class Common:
@@ -51,5 +52,26 @@ class Common:
         self.__dict__ = mySub(
             dict_class=self.__dict__,
             dict_yaml=self.returnSubSettings("Common"),
+            dict_default=dict_default,
+        )
+
+
+
+
+
+class Settings:
+    def __init__(self, nproc, gtf, fa, suffix_fq, suffix_bam, dir_fq, dir_bam):
+        self.nproc = nproc
+        self.gtf = gtf
+        self.fa = fa
+        self.suffix_fq = suffix_fq
+        self.suffix_bam = suffix_bam
+        self.dir_fq = dir_fq
+        self.dir_bam = dir_bam
+
+    def subSet(self, common, dict_default):
+        self.__dict__ = mySub(
+            dict_class=self.__dict__,
+            dict_yaml=common.returnSubSettings("Settings"),
             dict_default=dict_default,
         )

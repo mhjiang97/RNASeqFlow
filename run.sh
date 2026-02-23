@@ -50,5 +50,5 @@ fi
 
 # echo "${sample}"
 # echo "${config}"
-python rswp.py star -s "${sample}" -c "${config}" --no-run
-python rswp.py rsem -s "${sample}" -c "${config}" --no-run
+rswp star -s "${sample}" -c "${config}" --no-run
+rswp rsem -s "${sample}" -c "${config}" --no-run

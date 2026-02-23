@@ -1,198 +1,217 @@
-# RSWP: RNA-seq Workflow by Python <img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/rswp/utils/sticker/sticker.png" align="right" height=150 width=140/>  
+# RSWP: RNA-seq Workflow by Python
 
-<font size="2"> _A library for easy RNA-seq analysis_  
-_(Note: only for paired-end data so far and upgrade your python to 3.9)_ </font>
+<!-- markdownlint-disable MD033 -->
+<img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/src/rswp/utils/sticker/sticker.png" alt="RSWP sticker" align="right" height=150 width=140/>
 
-## Author  
-Minghao Jiang, <jiangminghao1001@163.com>  
+A library for easy RNA-seq analysis
 
-## Table of Contents  
-- [supported tools](#supported-tools)  
-- [features](#features)  
-- [license](#license)
+> **Note:** Currently supports only paired-end data. Requires Python 3.9 or higher.
 
------------
+## Author
 
-## Supported tools  
-**_make sure supported tools are executable in your PATH_**  
+Minghao Jiang, <jiangminghao1001@163.com>
 
-- `FastQC`
-  
-    > + quality control on fastq files  
-    > + get more information via [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
-    
-- `STAR`  
-  
-    > + [STAR](https://github.com/alexdobin/STAR) mapping algorithm  
-    > + both genome bam and transcriptome bam are supported  
-    
-- `RSEM`  
-  
-    > + [RSEM](https://github.com/deweylab/RSEM) quantification algorithm  
-    > + based on existing bam or directly mapping fq files with bowtie2  
-    
-- `SAMtools`  
-  
-    > + [SAMtools](https://github.com/samtools/samtools) utilities for manipulating alignments  
-    > + supported for only samtools index so far  
-    
-- `Salmon`
-  
-    > + [Salmon](https://github.com/COMBINE-lab/salmon) quantification algorithm
-    > + mapping-based mode only  
+## Table of Contents
 
-- _Applications for other tools are being built..._  
+- [RSWP: RNA-seq Workflow by Python](#rswp-rna-seq-workflow-by-python)
+  - [Author](#author)
+  - [Table of Contents](#table-of-contents)
+  - [Supported Tools](#supported-tools)
+  - [Installation](#installation)
+  - [Usage Guide](#usage-guide)
+    - [1. Running a Single Tool](#1-running-a-single-tool)
+    - [2. Running a Full Workflow](#2-running-a-full-workflow)
+    - [3. Running on a Cluster (SLURM)](#3-running-on-a-cluster-slurm)
+    - [4. Using Configuration Files](#4-using-configuration-files)
+    - [5. Dry Run (Checking Commands)](#5-dry-run-checking-commands)
+    - [6. Modifying Commands on the Fly](#6-modifying-commands-on-the-fly)
+  - [License](#license)
 
-## Features
-  
-### 1. Run one tool on a list of samples  
-- Download the rswp package:
-  
-    ```bash
-    git clone https://github.com/mhjiang97/RNASeqFlow.git
-    cd RNASeqFlow
-    ##### install required python modules #####
-    pip install -r requirements.txt
-    cd rswp
-    ##### add dir RNASeqFlow/rswp/ to your PATH #####
-    echo -e "\n# >>> rswp initialize >>>\nexport PATH=\${PATH}:`pwd`/\n# <<< rswp initialize <<<\n" >> ~/.bashrc
-    ```  
-- Get help first:
-  
-    ```bash
-    rswp.py star -h
-    ```  
-- Run `STAR` with a file with sample ids:
-    
-    ```bash
-    ##### build an index first #####
-    rswp.py star --build_index --dir_index ${my_star_index} --gtf ${gtf_file} --fa ${fa_file}
-    
-    for i in {1..5}
-    do
-        rswp.py star --index ${i} --samples samples.txt --dir_index ${my_star_index} --dir_fq ${fq_dir} &
-    done
-    ```  
-- Run `STAR` with samples available on the command line:
-  
-    ```bash
-    for i in {1..5}
-    do
-        rswp.py star --index ${i} --samples M1 M2 M3 M4 M5 --dir_index ${my_star_index} --dir_fq ${fq_dir} &
-    done
-    ```  
-- Or you can also call `STAR` like:
-  
-    ```bash
-    for s in M1 M2 M3 M4 M5
-    do
-        rswp.py star --samples ${s} --dir_index ${my_star_index} --dir_fq ${fq_dir} &
-    done
-    ```
-  
-### 2. Run a workflow on a list of samples  
-- First modify the run.sh at the bottom to encapsulate a workflow you prefer:
-  
-    ```shell
-    ####################
-    ### run.sh codes ###
-    ### ...          ###
-    ### at bottom:   ###
-    ####################
-    rswp.py star --samples "${sample}" --config "${config}" --dir_index ${my_star_index} --dir_fq ${my_fq_dir}
-    rswp.py rsem --samples "${sample}" --config "${config}" --prefix_reference ${my_rsem_reference} --dir_bam ${my_bam_dir}
-    ```  
-- `run.sh` expects two arguments "-s" and "-c", which represent "sample" and "config" respectively:
-  
-    ```bash
-    for s in M1 M2 M3 M4 M5
-    do
-        bash run.sh -s ${s} -c config.yaml &
-    done
-    ```  
-- If you pass nothing to flag s, please give the run.sh two positional parameters:
-  
-    ```bash
-    for i in {1..5}
-    do
-        bash run.sh -c config.yaml samples.txt ${i} &
-    done
-    ```  
-  
-### 3. Run workflow on cluster  
-- A sample sbatch file is like:
-  
-    ```bash
-    cat workflow.sbatch
-    ```  
-    ```shell
-    #!/bin/bash
-    #SBATCH -p cpu
-    #SBATCH -N 1
-    #SBATCH -n 1
-    #SBATCH --exclusive
-    #SBATCH --mail-type=end
-    #SBATCH --output=logs/slurm/workflow.%a.out
-    #SBATCH --error=logs/slurm/workflow.%a.err
-    #SBATCH --mail-user=jiangminghao1001@163.com
-    #SBATCH --array=1-5
-    bash run.sh -c config.yaml samples.txt ${SLURM_ARRAY_TASK_ID}
-    ```  
-- Then submit it to the computing node:
-  
-    ```bash
-    sbatch workflow.sbatch
-    ```  
-  
-### 4. Config based  
-- A config file must be in yaml format and have at least two hierarchies:
-  
-    ```yaml
-    ###########################
-    ### config.yaml contents ##
-    ###########################
-    Common:
-        dir_project: &dir_project ~/projects/AS/data/paper/
-        print_class: False
-    STAR:
-        dir_index: ~/doc/reference/star_2.7.5a
-        name_star_dir: &name_star_dir star
-    Settings:
-        gtf: ~/doc/reference/gtf/gencode.v32.annotation.gtf
-        fa: ~/doc/reference/fa/GRCh38.p13.genome.fa
-        dir_fq: ~/projects/AS/data/paper/
-        dir_bam:
-            - *dir_project
-            - *name_star_dir
-    RSEM:
-        prefix_reference: ~/doc/reference/rsem/index  
-    ```  
-- Remember: command line parameters always take precedence over corresponding settings in the config:
-  
-    ```bash
-    rswp.py star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a  
-    ```  
-    the code above will run star mapping against `~/doc/reference/mouse/star_2.7.5a` instead of `~/doc/reference/star_2.7.5a`
-  
-### 5. Check commands  
-- Add `--no-run` to rswp, and it will not call `subprocess.Popen()` but only print commands on the screen,
-  so you can check if commands are what you want:
-  
-    ```bash
-    rswp.py star --samples M1 --config config.yaml --no-run
-    ```
-  
-### 6. Add or delete flags after checking  
-- After running rswp.py with --no-run, you already manually check if the commands are what you desired.  
-- If you're going to modify commands without editing source codes, use `--add` to give specific steps more arguments 
-or use `--sub` to eliminate ones that didn't meet your requirements:  
-  
-    ```bash
-    ### check commands
-    rswp.py salmon --samples M1 --config config.yaml --no-run
-    ### add some arguments
-    rswp.py salmon --samples M1 --config config.yaml --add '{"Salmon":{"Salmon quantification":"--dumpEq --numBootstraps 100"}}'
-    ```
-  
-## License  
-RSWP is licensed under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html)  
+---
+
+## Supported Tools
+
+Ensure the following tools are installed and available in your system's `PATH`:
+
+- **[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)**: Quality control for FASTQ files.
+- **[STAR](https://github.com/alexdobin/STAR)**: RNA-seq mapping algorithm (supports both genome and transcriptome BAMs).
+- **[RSEM](https://github.com/deweylab/RSEM)**: Transcript quantification (can use existing BAMs or map directly with Bowtie2).
+- **[SAMtools](https://github.com/samtools/samtools)**: Utilities for manipulating alignments (currently supports `samtools index`).
+- **[Salmon](https://github.com/COMBINE-lab/salmon)**: Transcript quantification (mapping-based mode only).
+
+_Support for additional tools is currently in development._
+
+---
+
+## Installation
+
+Clone the repository and install the package using `uv`:
+
+```bash
+git clone https://github.com/mhjiang97/RNASeqFlow.git
+cd RNASeqFlow
+
+# Install the package in editable mode using uv
+uv pip install -e .
+```
+
+Verify the installation by checking the help menu:
+
+```bash
+rswp -h
+```
+
+---
+
+## Usage Guide
+
+### 1. Running a Single Tool
+
+You can run individual tools on one or multiple samples.
+
+First, build the STAR index:
+
+```bash
+rswp star --build_index --dir_index /path/to/star_index --gtf /path/to/annotation.gtf --fa /path/to/genome.fa
+```
+
+Then, run STAR on your samples. You can provide samples in several ways:
+
+- **Using a file containing sample IDs:**
+
+  ```bash
+  for i in {1..5}; do
+      rswp star --index ${i} --samples samples.txt --dir_index /path/to/star_index --dir_fq /path/to/fastq_dir &
+  done
+  ```
+
+- **Passing sample IDs directly via command line:**
+
+  ```bash
+  for i in {1..5}; do
+      rswp star --index ${i} --samples M1 M2 M3 M4 M5 --dir_index /path/to/star_index --dir_fq /path/to/fastq_dir &
+  done
+  ```
+
+- **Iterating over sample IDs:**
+
+  ```bash
+  for s in M1 M2 M3 M4 M5; do
+      rswp star --samples ${s} --dir_index /path/to/star_index --dir_fq /path/to/fastq_dir &
+  done
+  ```
+
+### 2. Running a Full Workflow
+
+You can encapsulate multiple steps into a shell script (`run.sh`).
+
+Modify the bottom of `run.sh` to define your workflow:
+
+```bash
+####################
+### run.sh codes ###
+####################
+rswp star --samples "${sample}" --config "${config}" --dir_index /path/to/star_index --dir_fq /path/to/fastq_dir
+rswp rsem --samples "${sample}" --config "${config}" --prefix_reference /path/to/rsem_ref --dir_bam /path/to/bam_dir
+```
+
+Run the workflow using the `-s` (sample) and `-c` (config) flags:
+
+```bash
+for s in M1 M2 M3 M4 M5; do
+    bash run.sh -s ${s} -c config.yaml &
+done
+```
+
+Alternatively, pass the sample list file and an index:
+
+```bash
+for i in {1..5}; do
+    bash run.sh -c config.yaml samples.txt ${i} &
+done
+```
+
+### 3. Running on a Cluster (SLURM)
+
+You can easily submit your workflow to a SLURM cluster using an array job.
+
+Create a `workflow.sbatch` file:
+
+```bash
+#!/bin/bash
+#SBATCH -p cpu
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --exclusive
+#SBATCH --mail-type=end
+#SBATCH --output=logs/slurm/workflow.%a.out
+#SBATCH --error=logs/slurm/workflow.%a.err
+#SBATCH --mail-user=jiangminghao1001@163.com
+#SBATCH --array=1-5
+
+bash run.sh -c config.yaml samples.txt ${SLURM_ARRAY_TASK_ID}
+```
+
+Submit the job:
+
+```bash
+sbatch workflow.sbatch
+```
+
+### 4. Using Configuration Files
+
+RSWP uses YAML configuration files to manage settings. The file must have at least two hierarchies.
+
+**Example `config.yaml`:**
+
+```yaml
+Common:
+    dir_project: &dir_project ~/projects/AS/data/paper/
+    print_class: False
+STAR:
+    dir_index: ~/doc/reference/star_2.7.5a
+    name_star_dir: &name_star_dir star
+Settings:
+    gtf: ~/doc/reference/gtf/gencode.v32.annotation.gtf
+    fa: ~/doc/reference/fa/GRCh38.p13.genome.fa
+    dir_fq: ~/projects/AS/data/paper/
+    dir_bam:
+        - *dir_project
+        - *name_star_dir
+RSEM:
+    prefix_reference: ~/doc/reference/rsem/index
+```
+
+> **Important:** Command-line arguments always override settings in the configuration file.
+>
+> ```bash
+> rswp star --samples M1 --config config.yaml --dir_index ~/doc/reference/mouse/star_2.7.5a
+> ```
+>
+> This will use `~/doc/reference/mouse/star_2.7.5a` instead of the path defined in `config.yaml`.
+
+### 5. Dry Run (Checking Commands)
+
+To preview the commands that will be executed without actually running them, use the `--no-run` flag:
+
+```bash
+rswp star --samples M1 --config config.yaml --no-run
+```
+
+### 6. Modifying Commands on the Fly
+
+If you need to add or remove specific arguments from the generated commands without editing the source code, you can use the `--add` and `--sub` flags.
+
+```bash
+# 1. Check the default commands
+rswp salmon --samples M1 --config config.yaml --no-run
+
+# 2. Add custom arguments to the Salmon quantification step
+rswp salmon --samples M1 --config config.yaml --add '{"Salmon":{"Salmon quantification":"--dumpEq --numBootstraps 100"}}'
+```
+
+---
+
+## License
+
+RSWP is licensed under the [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html).

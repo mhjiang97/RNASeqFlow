@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 
+import argparse
+import sys
 import textwrap
-from utils.functions import *
-from utils.classes import *
-from utils import defaults
-from utils.utils import *
+
+import colorama
+
+from . import config
+from .common import Common, Settings
+from .tools import fastqc, rsem, salmon, samtools, star
+from .utils import newSubparser
 
 colorama.init(autoreset=True)
 
@@ -12,10 +17,23 @@ version = "0.0.0.9000"
 
 
 def main():
-    # ===================================================================================== #
-    # note: give up the setting defaults method under argparse in order to fulfill the aim  #
-    # manipulating between yaml file settings and command line parameters at will           #
-    # ====================================================================================== #
+    from .utils import logger
+    logger.info(
+        colorama.Style.BRIGHT
+        + r'''
+██████╗ ███████╗██╗    ██╗██████╗
+██╔══██╗██╔════╝██║    ██║██╔══██╗
+██████╔╝███████╗██║ █╗ ██║██████╔╝
+██╔══██╗╚════██║██║███╗██║██╔═══╝
+██║  ██║███████║╚███╔███╔╝██║
+╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚═╝
+    '''
+    )
+    # ======================================================================== #
+    # Note: give up the setting defaults method under argparse                 #
+    # in order to fulfill the aim  manipulating between yaml file settings     #
+    # and command line parameters at will                                      #
+    # ======================================================================== #
 
     ## ----- top-level parser ----- ##
     parser_top = argparse.ArgumentParser(
@@ -71,9 +89,7 @@ def main():
         type=int,
         metavar="1, 2, 3, ...",
         help="which sample to run. "
-        "[Default: {}] means run the first sample.This flag will be very useful when being in a loop".format(
-            defaults.defaults_common["index"]
-        ),
+        f"[Default: {config.defaults_common['index']}] means run the first sample.This flag will be very useful when being in a loop",
     )
     parser_common.add_argument(
         "-c",
@@ -97,9 +113,7 @@ def main():
         type=str,
         metavar="",
         help="use the dir as prefix of outputs. "
-        "[Default: {}] means workflow yields output in the current dir".format(
-            defaults.defaults_common["dir_project"]
-        ),
+        f"[Default: {config.defaults_common['dir_project']}] means workflow yields output in the current dir",
     )
     parser_common.add_argument(
         "--run",
@@ -131,7 +145,7 @@ def main():
         type=int,
         metavar="",
         help="number of threads. "
-        "[Default: {}]".format(defaults.defaults_settings["nproc"]),
+        f"[Default: {config.defaults_settings['nproc']}]",
     )
     parser_settings.add_argument(
         "--gtf", type=str, metavar="", help="a preferred gtf file"
@@ -144,9 +158,7 @@ def main():
         type=str,
         metavar="",
         help="the suffix of fq files. "
-        "Don't include '.', good examples: [fastq, fq.gz]. [Default: {}]".format(
-            defaults.defaults_settings["suffix_fq"]
-        ),
+        f"Don't include '.', good examples: [fastq, fq.gz]. [Default: {config.defaults_settings['suffix_fq']}]",
     )
     parser_settings.add_argument(
         "--suffix_bam",
@@ -154,7 +166,7 @@ def main():
         default=None,
         metavar="",
         help="the suffix of bam files. "
-        "[Defaults: {}]".format(defaults.defaults_settings["suffix_bam"]),
+        f"[Defaults: {config.defaults_settings['suffix_bam']}]",
     )
     parser_settings.add_argument(
         "--dir_fq",
@@ -189,9 +201,7 @@ def main():
         type=str,
         metavar="",
         help="the name of star output dir. "
-        "Can be set as 'star/subdir' to store outputs in a subfolder [Default: {}]".format(
-            defaults.defaults_star["name_star_dir"]
-        ),
+        f"Can be set as 'star/subdir' to store outputs in a subfolder [Default: {config.defaults_star['name_star_dir']}]",
     )
     parser_star.add_argument(
         "--transcript_bam",
@@ -212,9 +222,7 @@ def main():
         type=int,
         metavar="",
         help="an error maybe occur when sorting the bam. "
-        "If so, set this argument higher [Default: {}]".format(
-            defaults.defaults_star["ram_bamsort"]
-        ),
+        f"If so, set this argument higher [Default: {config.defaults_star['ram_bamsort']}]",
     )
     parser_star.add_argument(
         "--soft_clip",
@@ -228,7 +236,7 @@ def main():
         type=int,
         metavar="",
         help="note that phred33 is predominant now. "
-        "[Default: {}]".format(defaults.defaults_star["phred"]),
+        f"[Default: {config.defaults_star['phred']}]",
     )
 
     ## ----- RSEM ----- ##
@@ -246,7 +254,7 @@ def main():
         type=str,
         metavar="~/bin/",
         help="path containing executable bowtie2. "
-        "[Default: {}]".format(defaults.defaults_rsem["path_bowtie2"]),
+        f"[Default: {config.defaults_rsem['path_bowtie2']}]",
     )
     parser_rsem.add_argument(
         "--prepare_reference",
@@ -263,9 +271,7 @@ def main():
         type=str,
         metavar="",
         help="the name of rsem output dir. "
-        "Can be set as 'rsem/subdir' to store outputs in a subfolder [Default: {}]".format(
-            defaults.defaults_rsem["name_rsem_dir"]
-        ),
+        f"Can be set as 'rsem/subdir' to store outputs in a subfolder [Default: {config.defaults_rsem['name_rsem_dir']}]",
     )
 
     ## ----- FastQC ----- ##
@@ -276,9 +282,7 @@ def main():
         type=str,
         metavar="",
         help="the name of fastqc output dir. "
-        "Can be set as 'fastqc/subdir' to store outputs in a subfolder [Default: {}]".format(
-            defaults.defaults_fastqc["name_fastqc_dir"]
-        ),
+        f"Can be set as 'fastqc/subdir' to store outputs in a subfolder [Default: {config.defaults_fastqc['name_fastqc_dir']}]",
     )
 
     ## ----- SAMtools ----- ##
@@ -289,7 +293,7 @@ def main():
         type=str,
         metavar="",
         help="can only be index so far. "
-        "[Default: {}]".format(defaults.defaults_samtools["mode"]),
+        f"[Default: {config.defaults_samtools['mode']}]",
     )
 
     ## ----- Salmon ----- ##
@@ -302,9 +306,7 @@ def main():
         type=str,
         metavar="",
         help="the name of salmon output dir. "
-        "Can be set as 'salmon/subdir' to store outputs in a subfolder [Default: {}]".format(
-            defaults.defaults_salmon["name_salmon_dir"]
-        ),
+        f"Can be set as 'salmon/subdir' to store outputs in a subfolder [Default: {config.defaults_salmon['name_salmon_dir']}]",
     )
 
     ## ----- subcommands ----- ##
@@ -391,24 +393,13 @@ def main():
     common.loadYamlFile()
 
     ##### update settings and reload samples #####
-    common.subSet(defaults.defaults_common)
+    common.subSet(config.defaults_common)
     common.loadSampleIds()
-    settings.subSet(common, defaults.defaults_settings)
+    settings.subSet(common, config.defaults_settings)
 
     ##### call different functions according to sub commands #####
     args.func(args, common, settings)
 
 
 if __name__ == "__main__":
-    sys.stdout.write(
-        colorama.Style.BRIGHT
-        + r'''
-██████╗ ███████╗██╗    ██╗██████╗
-██╔══██╗██╔════╝██║    ██║██╔══██╗
-██████╔╝███████╗██║ █╗ ██║██████╔╝
-██╔══██╗╚════██║██║███╗██║██╔═══╝
-██║  ██║███████║╚███╔███╔╝██║
-╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚═╝
-    '''
-    )
     main()

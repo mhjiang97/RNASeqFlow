@@ -1,4 +1,6 @@
-import re, sys, os, argparse
+import argparse
+import os
+import re
 
 
 def main():
