@@ -1,7 +1,7 @@
 # RSWP: RNA-seq Workflow by Python
 
 <!-- markdownlint-disable MD033 -->
-<img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/src/rswp/utils/sticker/sticker.png" alt="RSWP sticker" align="right" height=150 width=140/>
+<img src="https://github.com/mhjiang97/RNASeqFlow/blob/master/src/rswp/sticker/sticker.png" alt="RSWP sticker" align="right" height=150 width=140/>
 
 A library for easy RNA-seq analysis
 
